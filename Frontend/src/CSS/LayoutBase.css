@@ -1,0 +1,39 @@
+.layout-base {
+    color: aliceblue;
+    width: 70vw;
+    font-size: 1vw;
+    margin: 0 auto;
+    display: grid;
+}
+
+.layout-base .container-table {
+    height: 100vh;
+}
+
+.layout-base .bar-cell {
+    height: 10vh;
+}
+
+.layout-base .bar-element input{
+    height: 2.5vh;
+    width: 7vw;
+    font-size: 1.5vh;
+    margin-left: 20vw;
+}
+
+.layout-base .bar-element td{
+    width: 50%;
+}
+
+.layout-base .top-menu-cell {
+    height: 2vh;
+}
+
+.layout-base .top-menu-cell td{
+    width: 50vw;
+    text-align: center;
+}
+
+.layout-base .top-menu-element {
+    margin-top: 1vh;
+}
