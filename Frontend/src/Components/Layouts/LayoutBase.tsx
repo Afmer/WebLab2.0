@@ -14,16 +14,11 @@ const LayoutBase: React.FC<ParentCompProps> = (props) => {
                             <tr>
                             <td><h1>Театральная студия "В Созвездиях"</h1></td>
                             {!props.isAuthorize ?(
-                            <td>
-                                <table>
+                            <td className='auth'>
+                                <table className='auth-table'>
                                     <tr>
-                                        <td><input type="text" value="логин"/></td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="password" value="логин"/></td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="submit" value="войти"/></td>
+                                        <td><a href=''>Войти</a></td>
+                                        <td><a href=''>Регистрация</a></td>
                                     </tr>
                                 </table>
                             </td>
@@ -35,41 +30,21 @@ const LayoutBase: React.FC<ParentCompProps> = (props) => {
                 <tr className="top-menu-cell">
                     <div className='top-menu-element'>
                         <div className='background'>
-                        <table>
+                        <table className='link-table'>
                             <tr>
-                            <td><a href="~/MainChapter/Gallery">Галерея</a></td>
-                            <td><a href="~/MainChapter/Vacancies">Вакансии</a></td>
-                            <td><a href="~/MainChapter/Contacts">Контакты</a></td>
-                            <td><a href="~/MainChapter/About">О нас</a></td>
+                            <td><a href="">Галерея</a></td>
+                            <td><a href="">Вакансии</a></td>
+                            <td><a href="">Контакты</a></td>
+                            <td><a href="">О нас</a></td>
                             </tr>
                         </table>
                         </div>
                     </div>
                 </tr>
                 <tr className="main-content-cell">
-                    <table>
-                        <tr>
-                            <td className="sidebar">
-                                <table>
-                                    <tr>
-                                        <td><a href="~/SubChapter/Courses" className="element">Кружки</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href="~/SubChapter/FastCourses" className="element">Интенсивные курсы</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href="~/SubChapter/Services" className="element">Услуги</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href="~/SubChapter/FAQ" className="element">Частые вопросы</a></td>
-                                    </tr>
-                                </table>
-                            </td>
-                            <td className='content'>
-                                {props.renderBody}
-                            </td>
-                        </tr>
-                    </table>
+                    <div className='main-content-element'>
+                        {props.renderBody}
+                    </div>
                 </tr>
                 <tr className='footer-cell'>
                     <footer>

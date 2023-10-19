@@ -37,3 +37,60 @@
 .layout-base .top-menu-element {
     margin-top: 1vh;
 }
+
+.layout-base .link-table a {
+    color: #000000; /* Цвет текста ссылок */
+    text-decoration: none; /* Убрать подчеркивание ссылок */
+    position: relative; /* Позиционирование ссылок */
+}
+
+.layout-base .link-table a:hover {
+    color: #666666; /* Измененный цвет текста при наведении */
+}
+
+/* Добавление эффекта свечения */
+.layout-base .link-table a:before {
+    content: ""; /* Создать пустой элемент перед ссылкой */
+    position: absolute;
+    width: 100%;
+    height: 2px; /* Высота линии свечения */
+    bottom: 0; /* Расположение снизу */
+    left: 0;
+    background: #d6d6d6; /* Цвет свечения */
+    visibility: hidden; /* Начать с невидимого состояния */
+    transform: scaleX(0); /* Масштабирование по горизонтали */
+    transform-origin: bottom right; /* Ось масштабирования */
+    transition: transform 0.25s ease; /* Плавный переход эффекта */
+}
+
+/* Эффект при наведении */
+.layout-base .link-table a:hover:before {
+    visibility: visible; /* Сделать линию видимой */
+    transform: scaleX(1); /* Растянуть линию по горизонтали */
+    transform-origin: bottom left; /* Изменить ось масштабирования */
+}
+
+/* Стиль таблицы-панели */
+.layout-base .link-table {
+    border-collapse: separate;
+    border-spacing: 10px; /* Расстояние между ячейками */
+    background-color: rgb(255, 255, 255); /* Цвет фона таблицы (черный с прозрачностью) */
+    border-radius: 10px; /* Закругленные углы */
+    padding: 10px; /* Отступы внутри таблицы */
+}
+
+.layout-base .auth {
+    text-align: right;
+}
+
+.layout-base a {
+    color: aliceblue;
+}
+
+.layout-base .auth-table {
+    margin-left: 15vw;
+}
+
+.layout-base .auth-table td {
+    padding-left: 2vw;
+}
