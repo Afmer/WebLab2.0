@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 interface ParentCompProps {
     renderBody: React.ReactNode;
     isAuthorize: boolean
@@ -12,7 +13,7 @@ const LayoutBase: React.FC<ParentCompProps> = (props) => {
                     <div className='bar-element'>
                         <table>
                             <tr>
-                            <td><h1>Театральная студия "В Созвездиях"</h1></td>
+                            <td className='theatre-title'><Link to="/"><h1>Театральная студия "В Созвездиях"</h1></Link></td>
                             {!props.isAuthorize ?(
                             <td className='auth'>
                                 <table className='auth-table'>
@@ -32,10 +33,10 @@ const LayoutBase: React.FC<ParentCompProps> = (props) => {
                         <div className='background'>
                         <table className='link-table'>
                             <tr>
-                            <td><a href="">Галерея</a></td>
-                            <td><a href="">Спектакли</a></td>
-                            <td><a href="">Контакты</a></td>
-                            <td><a href="">О нас</a></td>
+                            <td><Link to="/Gallery">Галерея</Link></td>
+                            <td><Link to="/Shows">Спектакли</Link></td>
+                            <td><Link to="/Contacts">Контакты</Link></td>
+                            <td><Link to="/About">О нас</Link></td>
                             </tr>
                         </table>
                         </div>

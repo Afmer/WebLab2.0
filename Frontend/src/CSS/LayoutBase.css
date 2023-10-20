@@ -94,3 +94,8 @@
 .layout-base .auth-table td {
     padding-left: 2vw;
 }
+
+.layout-base .theatre-title a{
+    text-decoration: none;
+    color: inherit;
+}
