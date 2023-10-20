@@ -33,7 +33,7 @@ const LayoutBase: React.FC<ParentCompProps> = (props) => {
                         <table className='link-table'>
                             <tr>
                             <td><a href="">Галерея</a></td>
-                            <td><a href="">Вакансии</a></td>
+                            <td><a href="">Спектакли</a></td>
                             <td><a href="">Контакты</a></td>
                             <td><a href="">О нас</a></td>
                             </tr>
