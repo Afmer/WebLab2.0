@@ -51,7 +51,7 @@
                 "pull": true
             },
             "netCore": {
-                "appProject": "${workspaceFolder}/Backend/Backend.csproj"
+                "appProject": "${workspaceFolder}/Backend/WebLab2.0.csproj"
             }
         },
         {
@@ -71,7 +71,7 @@
                 "pull": true
             },
             "netCore": {
-                "appProject": "${workspaceFolder}/Backend/Backend.csproj"
+                "appProject": "${workspaceFolder}/Backend/WebLab2.0.csproj"
             }
         },
         {
@@ -82,7 +82,7 @@
             ],
             "dockerRun": {},
             "netCore": {
-                "appProject": "${workspaceFolder}/Backend/Backend.csproj",
+                "appProject": "${workspaceFolder}/Backend/WebLab2.0.csproj",
                 "enableDebugging": true
             }
         },
@@ -94,7 +94,7 @@
             ],
             "dockerRun": {},
             "netCore": {
-                "appProject": "${workspaceFolder}/Backend/Backend.csproj"
+                "appProject": "${workspaceFolder}/Backend/WebLab2.0.csproj"
             }
         }
     ]

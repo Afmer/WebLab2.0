@@ -12,17 +12,17 @@ USER appuser
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 ARG configuration=Release
 WORKDIR /src
-COPY ["Backend/Backend.csproj", "Backend/"]
-RUN dotnet restore "Backend/Backend.csproj"
+COPY ["Backend/WebLab2.0.csproj", "Backend/"]
+RUN dotnet restore "Backend/WebLab2.0.csproj"
 COPY . .
 WORKDIR "/src/Backend"
-RUN dotnet build "Backend.csproj" -c $configuration -o /app/build
+RUN dotnet build "WebLab2.0.csproj" -c $configuration -o /app/build
 
 FROM build AS publish
 ARG configuration=Release
-RUN dotnet publish "Backend.csproj" -c $configuration -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "WebLab2.0.csproj" -c $configuration -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Backend.dll"]
+ENTRYPOINT ["dotnet", "WebLab2.0.dll"]

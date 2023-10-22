@@ -10,6 +10,9 @@ services:
       dockerfile: Backend/Dockerfile
     ports:
       - 5001:5000
+    depends_on:
+      mariadb:
+        condition: service_healthy
   frontend:
     image: frontend
     build:
@@ -23,3 +26,18 @@ services:
       - ./Nginx/nginx.conf:/etc/nginx/nginx.conf
     ports:
       - 5000:80
+    depends_on:
+      - frontend
+      - backend
+  mariadb:
+    image: mariadb:10.9.5
+    restart: always
+    environment:
+      - MARIADB_ROOT_PASSWORD=red_alien
+    volumes:
+      - ./MariaDB/InitMariaDB.sql:/docker-entrypoint-initdb.d/InitMariaDB.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-uroot", "-p${MARIADB_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
