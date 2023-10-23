@@ -30,12 +30,11 @@ services:
       - frontend
       - backend
   mariadb:
-    image: mariadb:10.9.5
+    image: mariadbcustom
+    build:
+      context: ./MariaDB
+      dockerfile: Dockerfile
     restart: always
-    environment:
-      - MARIADB_ROOT_PASSWORD=red_alien
-    volumes:
-      - ./MariaDB/InitMariaDB.sql:/docker-entrypoint-initdb.d/InitMariaDB.sql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-uroot", "-p${MARIADB_ROOT_PASSWORD}"]
       interval: 10s
