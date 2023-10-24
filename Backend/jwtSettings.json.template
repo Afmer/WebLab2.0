@@ -1,4 +1,6 @@
 {
     "Key": "",
-    "Algorithm": ""
+    "Algorithm": "",
+    "Issuer": "",
+    "Audience": ""
 }
