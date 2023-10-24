@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using Weblab.Architecture.Enums;
-
+namespace Weblab.Modules.DB.DataModel;
 [PrimaryKey(nameof(Id))]
 public class MainPartialView
 {
