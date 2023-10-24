@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Weblab.Architecture.Configurations;
 using Weblab.Architecture.Interfaces;
 using Weblab.Modules.DB;
@@ -29,7 +32,25 @@ builder.Services.AddDbContextPool<ApplicationContext>(options => options
         )
 );
 builder.Services.AddScoped<IDbHome, DbManagerService>();
+builder.Services.AddSingleton<IJwtConfig, JwtConfigService>();
 var app = builder.Build();
+
+var jwtConfig = app.Services.GetService<IJwtConfig>();
+if(jwtConfig != null)
+{
+    var jwtOptions = app.Services.GetRequiredService<IOptions<JwtBearerOptions>>();
+    jwtOptions.Value.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidIssuer = jwtConfig.Issuer,
+        ValidateAudience = true,
+        ValidAudience = jwtConfig.Audience,
+        ValidateLifetime = true,
+        IssuerSigningKey = jwtConfig.SecurityKey,
+        ValidateIssuerSigningKey = true
+    };
+}
+else throw new Exception("jwt config not set");
 using(var scope = app.Services.CreateScope())
 {
     using(var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationContext>())
