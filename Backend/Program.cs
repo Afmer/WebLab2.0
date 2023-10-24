@@ -1,14 +1,18 @@
 using Microsoft.EntityFrameworkCore;
+using Weblab.Architecture.Configurations;
 using Weblab.Architecture.Interfaces;
 using Weblab.Modules.DB;
 using Weblab.Modules.Services;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+IConfiguration configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("jwtSettings.json", optional: true, reloadOnChange: true)
+    .Build();
+builder.Services.Configure<JwtConfiguration>(configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options => options.AddPolicy("CorsPolicy",
@@ -25,7 +29,6 @@ builder.Services.AddDbContextPool<ApplicationContext>(options => options
         )
 );
 builder.Services.AddScoped<IDbHome, DbManagerService>();
-
 var app = builder.Build();
 using(var scope = app.Services.CreateScope())
 {
