@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -31,6 +32,13 @@ builder.Services.AddDbContextPool<ApplicationContext>(options => options
             ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("MariaDbConnectionString"))
         )
 );
+builder.Services.AddAuthentication(options =>
+{
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme);
 builder.Services.AddScoped<IDbHome, DbManagerService>();
 builder.Services.AddSingleton<IJwtConfig, JwtConfigService>();
 var app = builder.Build();
@@ -76,6 +84,13 @@ app.UseRouting();
 app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
 app.UseAuthorization();
+app.UseAuthentication();
+app.UseCookiePolicy(new CookiePolicyOptions
+{
+        MinimumSameSitePolicy = SameSiteMode.Strict,
+        HttpOnly = HttpOnlyPolicy.Always,
+        Secure = CookieSecurePolicy.Always
+});
 
 app.MapControllers();
 

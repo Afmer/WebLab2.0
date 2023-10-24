@@ -1,10 +1,6 @@
-
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
 using Weblab.Architecture.Enums;
-using Weblab.Architecture.Interfaces;
 using Weblab.Modules.DB.DataModel;
-using Weblab.Modules.Services;
 
 namespace Weblab.Modules.DB;
 
@@ -12,6 +8,7 @@ public class ApplicationContext : DbContext
 {
     public DbSet<PartialView> PartialViews {get; set;}
     public DbSet<MainPartialView> MainPartialViews {get; set;}
+    public DbSet<UserIdentityInfo> UserIdentities {get; set;}
     private DateTime _getTimeNow => DateTime.UtcNow;
     public ApplicationContext(DbContextOptions<ApplicationContext> options)
     :base(options)
