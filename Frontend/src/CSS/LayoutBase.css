@@ -106,3 +106,8 @@
     vertical-align:text-bottom;
     text-align: center;
 }
+
+.layout-base .main-content-element {
+    display: flex;
+    min-height: 60vh;
+}
