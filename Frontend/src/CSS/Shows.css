@@ -22,5 +22,6 @@
 }
 
 .shows td {
-    padding-top: 1vh
+    padding-top: 1vh;
+    width: 100vw
 }
