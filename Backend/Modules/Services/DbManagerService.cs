@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Weblab.Architecture.Enums;
 using Weblab.Architecture.Interfaces;
+using Weblab.Controllers;
 using Weblab.Models;
 using Weblab.Modules.DB;
 using Weblab.Modules.DB.DataModel;
@@ -75,4 +76,49 @@ public class DbManagerService : IDbManager
         }
     }
 
+    public (GetShowStatus Status, ShowModel? Show) GetShow(Guid id)
+    {
+        try
+        {
+            var show = _context.Shows.Find(id);
+            if(show != null)
+            {
+                var model = new ShowModel
+                {
+                    Id = show.Id,
+                    Name = show.Name,
+                    Description = show.Description,
+                    Date = show.Date
+                };
+                return (GetShowStatus.Success, model);
+            }
+            else
+            {
+                return (GetShowStatus.NotFound, null);
+            }
+        }
+        catch
+        {
+            return (GetShowStatus.UnknownError, null);
+        }
+    }
+
+    public (Status Status, ShortShowModel[]? Shows) GetAllShows()
+    {
+        try
+        {
+            var shows = _context.Shows
+                .Select(x => new ShortShowModel
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                })
+                .ToArray();
+            return (Status.Success, shows);
+        }
+        catch
+        {
+            return (Status.UnknownError, null);
+        }
+    }
 }

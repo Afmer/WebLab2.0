@@ -42,6 +42,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<IHash, HashService>();
 builder.Services.AddScoped<IDbHome, DbManagerService>();
 builder.Services.AddScoped<IDbAuth, DbManagerService>();
+builder.Services.AddScoped<IDbShows, DbManagerService>();
 builder.Services.AddSingleton<IJwtConfig, JwtConfigService>();
 var app = builder.Build();
 
