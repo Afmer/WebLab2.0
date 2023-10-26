@@ -9,6 +9,7 @@ public class ApplicationContext : DbContext
     public DbSet<PartialView> PartialViews {get; set;}
     public DbSet<MainPartialView> MainPartialViews {get; set;}
     public DbSet<UserIdentityInfo> UserIdentities {get; set;}
+    public DbSet<Show> Shows {get; set;}
     private DateTime _getTimeNow => DateTime.UtcNow;
     public ApplicationContext(DbContextOptions<ApplicationContext> options)
     :base(options)
