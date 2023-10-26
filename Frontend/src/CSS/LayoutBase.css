@@ -99,3 +99,10 @@
     text-decoration: none;
     color: inherit;
 }
+
+.layout-base .footer-cell {
+    height: 12vh;
+    padding-top: 5vh;
+    vertical-align:text-bottom;
+    text-align: center;
+}
