@@ -1,0 +1,26 @@
+.shows .background {
+    background: linear-gradient(to bottom, #474747, #1a1a1a);
+    height: 10vh;
+    width: 100%;
+    border-radius: 10px;
+}
+
+.shows table {
+    width: 90%;
+    padding-top: 3vh;
+    margin: 0 auto;
+}
+.shows p {
+    margin-left: auto;
+}
+
+.shows a {
+    display: flex;
+    align-items: center;
+    padding-left: 2vw;
+    height: 100%;
+}
+
+.shows td {
+    padding-top: 1vh
+}
