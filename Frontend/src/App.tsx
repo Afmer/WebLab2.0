@@ -8,6 +8,7 @@ import Contacts from './Components/Contacts';
 import About from './Components/About';
 import LeftSidebarLayout from './Components/Layouts/LeftSidebarLayout';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Register from './Components/Register';
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Route path="/Shows" element={<LayoutBase renderBody={<Shows/>} isAuthorize={false}/>}/>
         <Route path="/Contacts" element={<LayoutBase renderBody={<Contacts/>} isAuthorize={false}/>}/>
         <Route path="/About" element={<LayoutBase renderBody={<About/>} isAuthorize={false}/>}/>
+        <Route path="/Register" element={<Register/>}/>
       </Routes>
       </BrowserRouter>
     </div>

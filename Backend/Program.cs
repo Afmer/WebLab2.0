@@ -39,7 +39,9 @@ builder.Services.AddAuthentication(options =>
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme);
+builder.Services.AddScoped<IHash, HashService>();
 builder.Services.AddScoped<IDbHome, DbManagerService>();
+builder.Services.AddScoped<IDbAuth, DbManagerService>();
 builder.Services.AddSingleton<IJwtConfig, JwtConfigService>();
 var app = builder.Build();
 

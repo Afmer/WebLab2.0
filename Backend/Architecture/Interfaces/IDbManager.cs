@@ -1,3 +1,3 @@
 namespace Weblab.Architecture.Interfaces;
 
-public interface IDbManager : IDbHome {}
+public interface IDbManager : IDbHome, IDbAuth {}
