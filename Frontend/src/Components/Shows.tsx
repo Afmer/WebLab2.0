@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { Component } from 'react';
 import '../CSS/Shows.css'
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
 interface ShortShow {
     id : string,
     name : string
@@ -40,7 +40,7 @@ class Shows extends Component<{}, States> {
             <table>
                 {this.state.Shows.map((item, index) => (
                     <tr><td>
-                        <div className='background'><a href="">{item.name}</a></div>
+                        <div className='background'><Link to={"/Show/" + item.id}>{item.name}</Link></div>
                     </td></tr>
                 ))}
             </table>
