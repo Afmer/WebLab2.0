@@ -9,6 +9,7 @@ import About from './Components/About';
 import LeftSidebarLayout from './Components/Layouts/LeftSidebarLayout';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Register from './Components/Register';
+import Show from './Components/Show';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route path="/Contacts" element={<LayoutBase renderBody={<Contacts/>} isAuthorize={false}/>}/>
         <Route path="/About" element={<LayoutBase renderBody={<About/>} isAuthorize={false}/>}/>
         <Route path="/Register" element={<Register/>}/>
+        <Route path="/Show/:id" element={<LayoutBase renderBody={<Show/>} isAuthorize={false}/>}/>
       </Routes>
       </BrowserRouter>
     </div>

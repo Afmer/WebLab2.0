@@ -1,0 +1,45 @@
+.show td {
+    width: 50%;
+    height: 100%;
+    position: relative;
+}
+
+.show tr {
+    height: 100%;
+}
+
+.show table {
+    height: 100%;
+    padding-top: 5vh;
+}
+
+.show .background {
+    background-color: rgb(0, 0, 0);
+    height: 100%;
+    border: 1vh solid #ffffff;
+    border-radius: 2.5vh;
+}
+
+.show .date {
+    position: absolute;
+    bottom: 0;
+    font-size: 6vh;
+    margin-left: 3vh;
+}
+
+.show .name {
+    text-align: center;
+    font-size: 5vh;
+}
+
+.show .left-cell {
+    padding-right: 1vw;
+}
+
+.show .right-cell {
+    padding-left: 1vw;
+}
+
+.show .description {
+    padding: 2vh;
+}
