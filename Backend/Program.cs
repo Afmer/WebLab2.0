@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using MVCSite.Features.Services;
 using Weblab.Architecture.Configurations;
 using Weblab.Architecture.Interfaces;
 using Weblab.Modules.DB;
@@ -43,6 +44,7 @@ builder.Services.AddScoped<IHash, HashService>();
 builder.Services.AddScoped<IDbHome, DbManagerService>();
 builder.Services.AddScoped<IDbAuth, DbManagerService>();
 builder.Services.AddScoped<IDbShows, DbManagerService>();
+builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddSingleton<IJwtConfig, JwtConfigService>();
 var app = builder.Build();
 
