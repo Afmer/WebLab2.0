@@ -15,6 +15,8 @@ public class Show
     [MaxLength(ShowConstants.NameMaxLength)]
     public string Name {get; set;} = null!;
     [Required]
+    public Guid LabelImage {get; set;}
+    [Required]
     [MaxLength(ShowConstants.DescriptionMaxLength)]
     public string Description {get; set;} = null!;
     [Required]
