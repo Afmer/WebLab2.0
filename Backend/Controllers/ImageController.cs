@@ -3,6 +3,8 @@ using Weblab.Architecture.Interfaces;
 
 namespace Weblab.Controllers;
 
+[ApiController]
+[Route("api/[controller]/[action]")]
 public class ImageController : ControllerBase
 {
     private readonly IImageService _imageService;
