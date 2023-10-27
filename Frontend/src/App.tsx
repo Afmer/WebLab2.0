@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './CSS/LayoutBase.css'
 import LayoutBase from './Components/Layouts/LayoutBase';
 import Home from './Components/Home'
@@ -8,11 +8,11 @@ import Contacts from './Components/Contacts';
 import About from './Components/About';
 import LeftSidebarLayout from './Components/Layouts/LeftSidebarLayout';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Register from './Components/Register';
 import Show from './Components/Show';
 
 
 function App() {
+  const [showPopup, setShowPopup] = useState(false);
   return (
     <div className="App">
       <LeftSidebarLayout/>
@@ -23,8 +23,8 @@ function App() {
         <Route path="/Shows" element={<LayoutBase renderBody={<Shows/>} isAuthorize={false}/>}/>
         <Route path="/Contacts" element={<LayoutBase renderBody={<Contacts/>} isAuthorize={false}/>}/>
         <Route path="/About" element={<LayoutBase renderBody={<About/>} isAuthorize={false}/>}/>
-        <Route path="/Register" element={<Register/>}/>
         <Route path="/Show/:id" element={<LayoutBase renderBody={<Show/>} isAuthorize={false}/>}/>
+        <Route path="/About" element={<LayoutBase renderBody={<About/>} isAuthorize={false}/>}/>
       </Routes>
       </BrowserRouter>
     </div>

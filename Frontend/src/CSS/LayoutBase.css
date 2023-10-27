@@ -111,3 +111,23 @@
     display: flex;
     min-height: 60vh;
 }
+
+.layout-base .button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-color: #ffffff;
+    color: #000000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+  }
+  
+.layout-base .button:hover {
+    background-color: #c9c9c9;
+}

@@ -1,13 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import RegisterPopup from '../RegisterPopup';
+import LoginPopup from '../LoginPopup';
 interface ParentCompProps {
     renderBody: React.ReactNode;
     isAuthorize: boolean
   }
 
 const LayoutBase: React.FC<ParentCompProps> = (props) => {
+    const [showRegisterPopup, setRegisterShowPopup] = useState(false);
+    const openRegisterPopup = () => {
+        setRegisterShowPopup(true);
+    }
+    
+    const closeRegisterPopup = () => {
+        setRegisterShowPopup(false);
+    }
+    const [showLoginPopup, setLoginShowPopup] = useState(false);
+    const openLoginPopup = () => {
+        setLoginShowPopup(true);
+    }
+    
+    const closeLoginPopup = () => {
+        setLoginShowPopup(false);
+    }
     return (
         <div className='layout-base'>
+            {showRegisterPopup && <RegisterPopup onClose={closeRegisterPopup} />}
+            {showLoginPopup && <LoginPopup onClose={closeLoginPopup} />}
             <table className='container-table'>
                 <tr className='bar-cell'>
                     <div className='bar-element'>
@@ -18,8 +38,8 @@ const LayoutBase: React.FC<ParentCompProps> = (props) => {
                             <td className='auth'>
                                 <table className='auth-table'>
                                     <tr>
-                                        <td><a href=''>Войти</a></td>
-                                        <td><a href=''>Регистрация</a></td>
+                                        <td><button className='button' onClick={openLoginPopup}>Войти</button></td>
+                                        <td><button className='button' onClick={openRegisterPopup}>Регистрация</button></td>
                                     </tr>
                                 </table>
                             </td>
@@ -36,7 +56,7 @@ const LayoutBase: React.FC<ParentCompProps> = (props) => {
                             <td><Link to="/Gallery">Галерея</Link></td>
                             <td><Link to="/Shows">Спектакли</Link></td>
                             <td><Link to="/Contacts">Контакты</Link></td>
-                            <td><Link to="/About">О нас</Link></td>
+                            <td><Link to="/Feedback">Обратная связь</Link></td>
                             </tr>
                         </table>
                         </div>
