@@ -11,6 +11,8 @@ public class RegisterModel
     [Required]
     [MinLength(UserIdentityConstants.PasswordMinLength)]
     public string Password {get; set;} = null!;
+    [Compare("Password", ErrorMessage = "Пароли не совпадают.")]
+    public string ConfirmPassword {get; set;} = null!;
     [Required]
     [EmailAddress]
     public string Email {get; set;} = null!;
