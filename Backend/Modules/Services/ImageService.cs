@@ -11,12 +11,12 @@ public class ImageService : IImageService
     {
         _hostEnviroment = hostEnvironment.ContentRootPath;
     }
-    public async Task<(string Url, Guid Id, ImageUploadStatusCode Status)> Upload(IFormFile uploadedFile, string area)
+    public async Task<(Guid Id, ImageUploadStatusCode Status)> Upload(IFormFile uploadedFile, string area)
     {
         if(uploadedFile == null)
-            return (null!, Guid.Empty, ImageUploadStatusCode.Error);
+            return (Guid.Empty, ImageUploadStatusCode.Error);
         if(!IsImage(uploadedFile))
-            return (null!, Guid.Empty, ImageUploadStatusCode.Error);
+            return (Guid.Empty, ImageUploadStatusCode.Error);
         var id = Guid.NewGuid();
         var imagePath = _hostEnviroment + $"/AppData/{area}/" + id.ToString() + ".jpg";
         var imageFolderPath = _hostEnviroment + $"/AppData/{area}/";
@@ -33,13 +33,13 @@ public class ImageService : IImageService
             catch (Exception ex)
             {
                 Console.WriteLine($"Ошибка при создании пути: {ex.Message}");
-                return (null!, Guid.Empty, ImageUploadStatusCode.PathCreationError);
+                return (Guid.Empty, ImageUploadStatusCode.PathCreationError);
             }
         }
         if(await SaveAsJpg(uploadedFile, imagePath))
-            return ("/api/Image/Show?" + "id=" + id.ToString() + '&' + "imageArea=" + area, id, ImageUploadStatusCode.Success);
+            return (id, ImageUploadStatusCode.Success);
         else
-            return (null!, Guid.Empty, ImageUploadStatusCode.Error);
+            return (Guid.Empty, ImageUploadStatusCode.Error);
     }
     public async Task<bool> Delete(Guid id, string area)
     {
@@ -61,11 +61,6 @@ public class ImageService : IImageService
             Console.WriteLine(ex.Message);
             return  false;
         }
-    }
-    public string GetLink(Guid id, string area)
-    {
-        string link = "/api/Image/Show?" + "id=" + id.ToString() + '&' + "imageArea=" + area;
-        return link;
     }
     private static bool IsImage(IFormFile file)
     {
