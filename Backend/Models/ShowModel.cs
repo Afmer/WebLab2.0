@@ -8,5 +8,7 @@ public class ShowModel : ShortShowModel
     [MaxLength(ShowConstants.DescriptionMaxLength)]
     public string Description {get; set;} = null!;
     [Required]
+    public Guid LabelImage {get; set;}
+    [Required]
     public DateTime Date {get; set;}
 }

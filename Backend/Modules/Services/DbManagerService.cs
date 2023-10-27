@@ -88,7 +88,8 @@ public class DbManagerService : IDbManager
                     Id = show.Id,
                     Name = show.Name,
                     Description = show.Description,
-                    Date = show.Date
+                    Date = show.Date,
+                    LabelImage = show.LabelImage
                 };
                 return (GetShowStatus.Success, model);
             }
