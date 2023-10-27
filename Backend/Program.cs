@@ -1,10 +1,14 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MVCSite.Features.Services;
 using Weblab.Architecture.Configurations;
+using Weblab.Architecture.Constants;
 using Weblab.Architecture.Interfaces;
 using Weblab.Modules.DB;
 using Weblab.Modules.Services;
@@ -33,13 +37,42 @@ builder.Services.AddDbContextPool<ApplicationContext>(options => options
             ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("MariaDbConnectionString"))
         )
 );
-builder.Services.AddAuthentication(options =>
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+.AddJwtBearer(options => {
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var token = context.Request.Cookies[CookieNames.Jwt];
+            if(!string.IsNullOrEmpty(token))
+            {
+                try
+                {
+                    var handler = new JwtSecurityTokenHandler();
+                    var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+
+                    if (jsonToken != null)
+                    {
+                        var usernameClaim = jsonToken.Claims.FirstOrDefault(claim => claim.Type == JwtClaimsConstant.Login);
+                        if (usernameClaim != null)
+                        {
+                            var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, usernameClaim.Value) }, context.Scheme.Name);
+                            context.Principal = new ClaimsPrincipal(identity);
+                            context.Success();
+                        }
+                    }
+                }catch{}
+            }
+            return Task.CompletedTask;
+        }
+    };
+});
+builder.Services.AddAuthorization(options =>
 {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme);
+    options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
+    .RequireAuthenticatedUser()
+    .Build();
+});
 builder.Services.AddScoped<IHash, HashService>();
 builder.Services.AddScoped<IDbHome, DbManagerService>();
 builder.Services.AddScoped<IDbAuth, DbManagerService>();
