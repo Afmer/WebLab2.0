@@ -62,6 +62,11 @@ public class ImageService : IImageService
             return  false;
         }
     }
+    public string GetImagePath(string imageArea, Guid id)
+    {
+        var path = _hostEnviroment + $"/AppData/{imageArea}/" + id.ToString() + ".jpg";
+        return path;
+    }
     private static bool IsImage(IFormFile file)
     {
         string[] allowedExtensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp" };
