@@ -84,6 +84,7 @@ builder.Services.AddScoped<IDbHome, DbManagerService>();
 builder.Services.AddScoped<IDbAuth, DbManagerService>();
 builder.Services.AddScoped<IDbShows, DbManagerService>();
 builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<IIdentityService, IdentityService>();
 var app = builder.Build();
 
 using(var scope = app.Services.CreateScope())

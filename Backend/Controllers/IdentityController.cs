@@ -15,10 +15,12 @@ public class IdentityController : ControllerBase
 {
     private readonly IJwtConfig _jwtConfig;
     private readonly IDbAuth _dbManager;
-    public IdentityController(IJwtConfig jwtConfig, IDbAuth dbManager)
+    private readonly IIdentityService _identityService;
+    public IdentityController(IJwtConfig jwtConfig, IDbAuth dbManager, IIdentityService identityService)
     {
         _jwtConfig = jwtConfig;
         _dbManager = dbManager;
+        _identityService = identityService;
     }
     [HttpPost]
     public async Task<IActionResult> Register([FromBody]RegisterModel model)
@@ -39,6 +41,18 @@ public class IdentityController : ControllerBase
             else return BadRequest();
         }
         else return BadRequest(ModelState);
+    }
+    public async Task<IActionResult> Login([FromBody]LoginModel model)
+    {
+        var result = await _identityService.Login(model, HttpContext);
+        if(result == LoginStatus.NotFound)
+            return BadRequest("not found");
+        else if(result == LoginStatus.InvalidPassword)
+            return BadRequest("invalid password");
+        else if(result == LoginStatus.Success)
+            return Ok();
+        else 
+            return BadRequest();
     }
     private string GenerateJwtToken(string login)
     {

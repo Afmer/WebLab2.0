@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 using Weblab.Architecture.Enums;
 using Weblab.Architecture.Interfaces;
 using Weblab.Controllers;
@@ -121,5 +122,22 @@ public class DbManagerService : IDbManager
         {
             return (Status.UnknownError, null);
         }
+    }
+
+    public async Task<(GetUserStatus Status, UserIdentityModel? User)> GetUser(string login)
+    {
+        var userEntry = await _context.UserIdentities
+            .FindAsync(login);
+        if(userEntry == null)
+            return (GetUserStatus.NotFound, null);
+        var result = new UserIdentityModel
+        {
+            Login = userEntry.Login,
+            PasswordHash = userEntry.PasswordHash,
+            Salt = userEntry.Salt,
+            Role = userEntry.Role,
+            Email = userEntry.Email
+        };
+        return (GetUserStatus.Success, result);
     }
 }
