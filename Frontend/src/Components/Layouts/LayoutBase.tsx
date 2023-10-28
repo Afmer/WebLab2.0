@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import RegisterPopup from '../RegisterPopup';
 import LoginPopup from '../LoginPopup';
+import { inject, observer } from 'mobx-react';
+import { AppStore } from '../../AppStore';
 interface ParentCompProps {
-    renderBody: React.ReactNode;
-    isAuthorize: boolean
+    renderBody: React.ReactNode
+    appStore?: AppStore
   }
 
 const LayoutBase: React.FC<ParentCompProps> = (props) => {
@@ -34,7 +36,7 @@ const LayoutBase: React.FC<ParentCompProps> = (props) => {
                         <table>
                             <tr>
                             <td className='theatre-title'><Link to="/"><h1>Театральная студия "В Созвездиях"</h1></Link></td>
-                            {!props.isAuthorize ?(
+                            {!props.appStore?.authInfo.IsAuthorize ?(
                             <td className='auth'>
                                 <table className='auth-table'>
                                     <tr>
@@ -78,4 +80,4 @@ const LayoutBase: React.FC<ParentCompProps> = (props) => {
     );
 }
 
-export default LayoutBase
+export default inject('appStore')(observer(LayoutBase))

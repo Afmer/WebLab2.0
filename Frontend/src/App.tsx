@@ -9,24 +9,28 @@ import About from './Components/About';
 import LeftSidebarLayout from './Components/Layouts/LeftSidebarLayout';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Show from './Components/Show';
+import { Provider } from 'mobx-react';
+import { appStore } from './AppStore';
 
 
 function App() {
   const [showPopup, setShowPopup] = useState(false);
   return (
     <div className="App">
-      <LeftSidebarLayout/>
-      <BrowserRouter>
-      <Routes>
-        <Route path="*" element={<LayoutBase renderBody={<Home/>} isAuthorize={false}/>}/>
-        <Route path="/Gallery" element={<LayoutBase renderBody={<Gallery/>} isAuthorize={false}/>}/>
-        <Route path="/Shows" element={<LayoutBase renderBody={<Shows/>} isAuthorize={false}/>}/>
-        <Route path="/Contacts" element={<LayoutBase renderBody={<Contacts/>} isAuthorize={false}/>}/>
-        <Route path="/About" element={<LayoutBase renderBody={<About/>} isAuthorize={false}/>}/>
-        <Route path="/Show/:id" element={<LayoutBase renderBody={<Show/>} isAuthorize={false}/>}/>
-        <Route path="/About" element={<LayoutBase renderBody={<About/>} isAuthorize={false}/>}/>
-      </Routes>
-      </BrowserRouter>
+      <Provider appStore={appStore}>
+        <LeftSidebarLayout/>
+        <BrowserRouter>
+        <Routes>
+          <Route path="*" element={<LayoutBase renderBody={<Home/>}/>}/>
+          <Route path="/Gallery" element={<LayoutBase renderBody={<Gallery/>}/>}/>
+          <Route path="/Shows" element={<LayoutBase renderBody={<Shows/>}/>}/>
+          <Route path="/Contacts" element={<LayoutBase renderBody={<Contacts/>}/>}/>
+          <Route path="/About" element={<LayoutBase renderBody={<About/>}/>}/>
+          <Route path="/Show/:id" element={<LayoutBase renderBody={<Show/>}/>}/>
+          <Route path="/About" element={<LayoutBase renderBody={<About/>}/>}/>
+        </Routes>
+        </BrowserRouter>
+      </Provider>
     </div>
   );
 }

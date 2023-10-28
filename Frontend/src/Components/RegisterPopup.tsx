@@ -1,8 +1,11 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import '../CSS/Popup.css'
 import axios from 'axios';
+import { inject, observer } from 'mobx-react';
+import { AppStore, appStore } from '../AppStore';
 interface RegisterPopupProps {
   onClose: () => void;
+  appStore?: AppStore
 }
 
 interface FormData {
@@ -36,6 +39,7 @@ const RegisterPopup: React.FC<RegisterPopupProps> = ({ onClose }) => {
 
       if (response.status === 200) {
         console.log('Регистрация успешно завершена!');
+        appStore.updateAuth({IsAuthorize: true, IsAdmin: false});
         onClose();
       }
     } catch (error) {
@@ -100,4 +104,4 @@ const RegisterPopup: React.FC<RegisterPopupProps> = ({ onClose }) => {
   );
 };
 
-export default RegisterPopup;
+export default inject('appStore')(observer(RegisterPopup));
