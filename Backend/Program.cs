@@ -1,10 +1,9 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MVCSite.Features.Services;
 using Weblab.Architecture.Configurations;
@@ -37,31 +36,38 @@ builder.Services.AddDbContextPool<ApplicationContext>(options => options
             ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("MariaDbConnectionString"))
         )
 );
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder.Services.AddSingleton<IJwtConfig, JwtConfigService>();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddCookie(x =>
+{
+    x.Cookie.Name = CookieNames.Jwt;
+})
 .AddJwtBearer(options => {
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidIssuer = configuration["Issuer"],
+        ValidateAudience = true,
+        ValidAudience = configuration["Audience"],
+        ValidateLifetime = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Key"]!)),
+        ValidateIssuerSigningKey = true,
+        NameClaimType = ClaimsIdentity.DefaultNameClaimType
+    };
     options.Events = new JwtBearerEvents
     {
         OnMessageReceived = context =>
         {
             var token = context.Request.Cookies[CookieNames.Jwt];
-            if(!string.IsNullOrEmpty(token))
+            if(!string.IsNullOrEmpty(token) && context != null)
             {
-                try
-                {
-                    var handler = new JwtSecurityTokenHandler();
-                    var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
-
-                    if (jsonToken != null)
-                    {
-                        var usernameClaim = jsonToken.Claims.FirstOrDefault(claim => claim.Type == JwtClaimsConstant.Login);
-                        if (usernameClaim != null)
-                        {
-                            var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, usernameClaim.Value) }, context.Scheme.Name);
-                            context.Principal = new ClaimsPrincipal(identity);
-                            context.Success();
-                        }
-                    }
-                }catch{}
+                context.Token = token;
             }
             return Task.CompletedTask;
         }
@@ -78,25 +84,8 @@ builder.Services.AddScoped<IDbHome, DbManagerService>();
 builder.Services.AddScoped<IDbAuth, DbManagerService>();
 builder.Services.AddScoped<IDbShows, DbManagerService>();
 builder.Services.AddScoped<IImageService, ImageService>();
-builder.Services.AddSingleton<IJwtConfig, JwtConfigService>();
 var app = builder.Build();
 
-var jwtConfig = app.Services.GetService<IJwtConfig>();
-if(jwtConfig != null)
-{
-    var jwtOptions = app.Services.GetRequiredService<IOptions<JwtBearerOptions>>();
-    jwtOptions.Value.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidIssuer = jwtConfig.Issuer,
-        ValidateAudience = true,
-        ValidAudience = jwtConfig.Audience,
-        ValidateLifetime = true,
-        IssuerSigningKey = jwtConfig.SecurityKey,
-        ValidateIssuerSigningKey = true
-    };
-}
-else throw new Exception("jwt config not set");
 using(var scope = app.Services.CreateScope())
 {
     using(var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationContext>())
@@ -121,8 +110,8 @@ if (app.Environment.IsDevelopment())
 app.UseRouting();
 app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 app.UseCookiePolicy(new CookiePolicyOptions
 {
         MinimumSameSitePolicy = SameSiteMode.Strict,
