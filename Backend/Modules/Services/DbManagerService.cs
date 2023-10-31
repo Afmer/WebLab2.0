@@ -1,8 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
 using Weblab.Architecture.Enums;
 using Weblab.Architecture.Interfaces;
-using Weblab.Controllers;
 using Weblab.Models;
 using Weblab.Modules.DB;
 using Weblab.Modules.DB.DataModel;
@@ -45,36 +43,39 @@ public class DbManagerService : IDbManager
             return (GetHomeHtmlStatus.UnknownError, null);
     }
 
-    public async Task<Status> Register(RegisterModel model)
+    public async Task<RegisterStatus> AddUser(RegisterModel model)
     {
-        var result = await ExecuteInTransaction(async () =>
+        var user = await _context.UserIdentities.FindAsync(model.Login);
+        if(user != null)
+            return RegisterStatus.UserExists;
+        var context = new ValidationContext(model, null, null);
+        var results = new List<ValidationResult>();
+        if(Validator.TryValidateObject(model, context, results, true))
         {
-            var context = new ValidationContext(model, null, null);
-            var results = new List<ValidationResult>();
-            if(Validator.TryValidateObject(model, context, results, true))
+            var result = await ExecuteInTransaction(async () =>
             {
-                var passwordHash = _hashService.GeneratePasswordHash(model.Password);
-                var identity = new UserIdentityInfo
-                {
-                    Login = model.Login,
-                    PasswordHash = passwordHash.Hash,
-                    Salt = passwordHash.Salt,
-                    Role = Role.User,
-                    Email = model.Email
-                };
-                await _context.UserIdentities.AddAsync(identity);
-                await _context.SaveChangesAsync();
+                    var passwordHash = _hashService.GeneratePasswordHash(model.Password);
+                    var identity = new UserIdentityInfo
+                    {
+                        Login = model.Login,
+                        PasswordHash = passwordHash.Hash,
+                        Salt = passwordHash.Salt,
+                        Role = Role.User,
+                        Email = model.Email
+                    };
+                    await _context.UserIdentities.AddAsync(identity);
+                    await _context.SaveChangesAsync();
+            });
+            if(result.Success)
+            {
+                return RegisterStatus.Success;
             }
-            else throw new Exception("Invalid model");
-        });
-        if(result.Success)
-        {
-            return Status.Success;
+            else
+            {
+                return RegisterStatus.UnknownError;
+            }
         }
-        else
-        {
-            return Status.UnknownError;
-        }
+        else return RegisterStatus.InvalidModel;
     }
 
     public (GetShowStatus Status, ShowModel? Show) GetShow(Guid id)

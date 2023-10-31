@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
@@ -33,6 +34,20 @@ public class IdentityService : IIdentityService
             MaxAge = TimeSpan.FromDays(1)
         });
         return LoginStatus.Success;
+    }
+    public async Task<RegisterStatus> Register(RegisterModel model, HttpContext context)
+    {
+        var result = await _dbManager.AddUser(model);
+        if(result == RegisterStatus.Success)
+        {
+            var token = GenerateJwtToken(model.Login);
+            context.Response.Cookies.Append(CookieNames.Jwt, token, 
+            new CookieOptions
+            {
+                    MaxAge = TimeSpan.FromDays(1)
+            });
+        }
+        return result;
     }
     private string GenerateJwtToken(string login)
     {
