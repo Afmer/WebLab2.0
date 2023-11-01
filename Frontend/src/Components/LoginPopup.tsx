@@ -1,18 +1,22 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import '../CSS/Popup.css'
+import { AppStore } from '../AppStore';
+import { inject, observer } from 'mobx-react';
+import axios from 'axios';
 interface LoginPopupProps {
   onClose: () => void;
+  appStore?: AppStore
 }
 
 interface FormData {
-  username: string;
+  login: string;
   password: string;
   confirmPassword: string;
 }
 
-const LoginPopup: React.FC<LoginPopupProps> = ({ onClose }) => {
+const LoginPopup: React.FC<LoginPopupProps> = ({ onClose, appStore }) => {
   const [formData, setFormData] = useState<FormData>({
-    username: '',
+    login: '',
     password: '',
     confirmPassword: '',
   });
@@ -25,10 +29,19 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ onClose }) => {
     });
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    try {
+      const response = await axios.post('/api/Identity/Login', formData);
 
-    onClose();
+      if (response.status === 200) {
+        console.log('Регистрация успешно завершена!');
+        appStore?.updateAuth({IsAuthorize: true, IsAdmin: false});
+        onClose();
+      }
+    } catch (error) {
+      console.error('Ошибка:', error);
+    }
   };
 
   return (
@@ -38,12 +51,12 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ onClose }) => {
         <h2 className='label'>Вход</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="username">Имя пользователя:</label>
+            <label htmlFor="login">Имя пользователя:</label>
             <input
               type="text"
-              id="username"
-              name="username"
-              value={formData.username}
+              id="login"
+              name="login"
+              value={formData.login}
               onChange={handleChange}
               required
             />
@@ -66,4 +79,4 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ onClose }) => {
   );
 };
 
-export default LoginPopup;
+export default inject('appStore')(observer(LoginPopup));
