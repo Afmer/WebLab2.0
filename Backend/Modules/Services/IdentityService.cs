@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Weblab.Architecture.Constants;
 using Weblab.Architecture.Enums;
@@ -48,6 +49,15 @@ public class IdentityService : IIdentityService
             });
         }
         return result;
+    }
+    public async Task<UserIdentityBaseModel?> GetUserIdentityBaseInfo(string login)
+    {
+        var result = await _dbManager.GetUser(login);
+        if(result.Status == GetUserStatus.NotFound)
+            return null;
+        else if(result.Status == GetUserStatus.Success)
+            return result.User;
+        else throw new Exception("Unknown error");
     }
     private string GenerateJwtToken(string login)
     {

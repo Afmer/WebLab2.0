@@ -40,4 +40,14 @@ public class IdentityController : ControllerBase
         else 
             return BadRequest();
     }
+    [HttpGet]
+    public IActionResult WhoIAm()
+    {
+        if(HttpContext.User.Identity != null && HttpContext.User.Identity.Name != null)
+        {
+            var user = _identityService.GetUserIdentityBaseInfo(HttpContext.User.Identity.Name);
+            return Ok(user);
+        }
+        else return Unauthorized();
+    }
 }
