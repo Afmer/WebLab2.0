@@ -41,11 +41,11 @@ public class IdentityController : ControllerBase
             return BadRequest();
     }
     [HttpGet]
-    public IActionResult WhoIAm()
+    public async Task<IActionResult> WhoIAm()
     {
         if(HttpContext.User.Identity != null && HttpContext.User.Identity.Name != null)
         {
-            var user = _identityService.GetUserIdentityBaseInfo(HttpContext.User.Identity.Name);
+            var user = await _identityService.GetUserIdentityBaseInfo(HttpContext.User.Identity.Name);
             return Ok(user);
         }
         else return Unauthorized();
