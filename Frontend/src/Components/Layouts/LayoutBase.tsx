@@ -28,6 +28,10 @@ const LayoutBase: React.FC<ParentCompProps> = (props) => {
     const closeLoginPopup = () => {
         setLoginShowPopup(false);
     }
+    const logoutEvent = async () => {
+        await axios.get('/api/Identity/Logout')
+        props.appStore?.updateAuth({IsAuthorize: false, IsAdmin: false})
+    }
     const getIdentity = async () => {
         await axios.get('/api/Identity/WhoIAm')
             .then(function (response) {
@@ -54,16 +58,20 @@ const LayoutBase: React.FC<ParentCompProps> = (props) => {
                         <table>
                             <tr>
                             <td className='theatre-title'><Link to="/"><h1>Театральная студия "В Созвездиях"</h1></Link></td>
-                            {!props.appStore?.authInfo.IsAuthorize ?(
                             <td className='auth'>
                                 <table className='auth-table'>
                                     <tr>
-                                        <td><button className='button' onClick={openLoginPopup}>Войти</button></td>
-                                        <td><button className='button' onClick={openRegisterPopup}>Регистрация</button></td>
+                                        {!props.appStore?.authInfo.IsAuthorize ?(
+                                            <>
+                                                <td><button className='button' onClick={openLoginPopup}>Войти</button></td>
+                                                <td><button className='button' onClick={openRegisterPopup}>Регистрация</button></td>
+                                            </>
+                                        ): (
+                                            <td><button className='button' onClick={logoutEvent}>Выйти</button></td>
+                                        )}
                                     </tr>
                                 </table>
                             </td>
-                            ):null}
                             </tr>
                         </table>
                     </div>
