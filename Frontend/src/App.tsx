@@ -11,6 +11,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Show from './Components/Show';
 import { Provider } from 'mobx-react';
 import { appStore } from './AppStore';
+import AddShow from './Components/AddShow';
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Route path="/About" element={<LayoutBase renderBody={<About/>}/>}/>
           <Route path="/Show/:id" element={<LayoutBase renderBody={<Show/>}/>}/>
           <Route path="/About" element={<LayoutBase renderBody={<About/>}/>}/>
+          <Route path="/AddShow" element={<LayoutBase renderBody={<AddShow/>}/>}/>
         </Routes>
         </BrowserRouter>
       </Provider>
