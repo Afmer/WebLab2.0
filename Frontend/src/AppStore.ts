@@ -2,7 +2,7 @@ import { action, makeAutoObservable } from 'mobx';
 import AuthInfo from './Interfaces/AuthInfo';
 
 export class AppStore {
-  authInfo: AuthInfo = {IsAuthorize: false, IsAdmin: false};
+  authInfo: AuthInfo | null = null;
 
   constructor() {
     makeAutoObservable(this, {

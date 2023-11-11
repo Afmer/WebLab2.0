@@ -36,7 +36,7 @@ const LayoutBase: React.FC<ParentCompProps> = (props) => {
         await axios.get('/api/Identity/WhoIAm')
             .then(function (response) {
                 if(response.statusText !== 'OK')
-                    return;
+                    props.appStore?.updateAuth({IsAuthorize: false, IsAdmin: false})
                 else
                 {
                     const data : IdentityBase = response.data.result;
@@ -61,14 +61,15 @@ const LayoutBase: React.FC<ParentCompProps> = (props) => {
                             <td className='auth'>
                                 <table className='auth-table'>
                                     <tr>
-                                        {!props.appStore?.authInfo.IsAuthorize ?(
-                                            <>
-                                                <td><button className='button' onClick={openLoginPopup}>Войти</button></td>
-                                                <td><button className='button' onClick={openRegisterPopup}>Регистрация</button></td>
-                                            </>
-                                        ): (
-                                            <td><button className='button' onClick={logoutEvent}>Выйти</button></td>
-                                        )}
+                                        {props.appStore?.authInfo !== null ?(
+                                            !props.appStore?.authInfo.IsAuthorize ?(
+                                                <>
+                                                    <td><button className='button' onClick={openLoginPopup}>Войти</button></td>
+                                                    <td><button className='button' onClick={openRegisterPopup}>Регистрация</button></td>
+                                                </>
+                                            ): (
+                                                <td><button className='button' onClick={logoutEvent}>Выйти</button></td>
+                                        )) : <p>wait</p>}
                                     </tr>
                                 </table>
                             </td>
