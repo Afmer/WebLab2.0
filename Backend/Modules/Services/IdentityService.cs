@@ -36,6 +36,10 @@ public class IdentityService : IIdentityService
         });
         return LoginStatus.Success;
     }
+    public void Logout(HttpContext context)
+    {
+        context.Response.Cookies.Delete(CookieNames.Jwt);
+    }
     public async Task<RegisterStatus> Register(RegisterModel model, HttpContext context)
     {
         var result = await _dbManager.AddUser(model);

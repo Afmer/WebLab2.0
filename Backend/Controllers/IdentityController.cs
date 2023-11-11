@@ -41,6 +41,12 @@ public class IdentityController : ControllerBase
             return BadRequest();
     }
     [HttpGet]
+    public IActionResult Logout()
+    {
+        _identityService.Logout(HttpContext);
+        return Ok();
+    }
+    [HttpGet]
     public async Task<IActionResult> WhoIAm()
     {
         if(HttpContext.User.Identity != null && HttpContext.User.Identity.Name != null)
