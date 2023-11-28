@@ -3,6 +3,7 @@ import '../CSS/Popup.css'
 import axios from 'axios';
 import { inject, observer } from 'mobx-react';
 import { AppStore } from '../AppStore';
+import InitIdentity from './Functions/InitIdentity';
 interface RegisterPopupProps {
   onClose: () => void;
   appStore?: AppStore
@@ -39,7 +40,7 @@ const RegisterPopup: React.FC<RegisterPopupProps> = ({ onClose, appStore }) => {
 
       if (response.status === 200) {
         console.log('Регистрация успешно завершена!');
-        appStore?.updateAuth({IsAuthorize: true, IsAdmin: false});
+        InitIdentity(appStore!)
         onClose();
       }
     } catch (error) {

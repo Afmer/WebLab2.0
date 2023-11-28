@@ -3,6 +3,7 @@ import '../CSS/Popup.css'
 import { AppStore } from '../AppStore';
 import { inject, observer } from 'mobx-react';
 import axios from 'axios';
+import InitIdentity from './Functions/InitIdentity';
 interface LoginPopupProps {
   onClose: () => void;
   appStore?: AppStore
@@ -36,7 +37,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ onClose, appStore }) => {
 
       if (response.status === 200) {
         console.log('Регистрация успешно завершена!');
-        appStore?.updateAuth({IsAuthorize: true, IsAdmin: false});
+        InitIdentity(appStore!);
         onClose();
       }
     } catch (error) {

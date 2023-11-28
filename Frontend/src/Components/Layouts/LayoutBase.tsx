@@ -6,6 +6,7 @@ import { inject, observer } from 'mobx-react';
 import { AppStore } from '../../AppStore';
 import axios from 'axios';
 import IdentityBase from '../../Interfaces/IdentityBase';
+import InitIdentity from '../Functions/InitIdentity';
 interface ParentCompProps {
     renderBody: React.ReactNode
     appStore?: AppStore
@@ -30,25 +31,9 @@ const LayoutBase: React.FC<ParentCompProps> = (props) => {
     }
     const logoutEvent = async () => {
         await axios.get('/api/Identity/Logout')
-        props.appStore?.updateAuth({IsAuthorize: false, IsAdmin: false})
+        props.appStore?.updateAuth({IsAuthorize: false, IsAdmin: false, Username: ""})
     }
-    const getIdentity = async () => {
-        await axios.get('/api/Identity/WhoIAm')
-            .then(function (response) {
-                if(response.statusText !== 'OK')
-                    props.appStore?.updateAuth({IsAuthorize: false, IsAdmin: false})
-                else
-                {
-                    const data : IdentityBase = response.data.result;
-                    props.appStore?.updateAuth({IsAuthorize: true, IsAdmin: false})
-                }
-            })
-            .catch(error => {
-                props.appStore?.updateAuth({IsAuthorize: false, IsAdmin: false})
-                console.error('Error:', error);
-            });
-    }
-    useEffect(() => {getIdentity()}, [])
+    useEffect(() => {InitIdentity(props.appStore!)}, [])
     return (
         <div className='layout-base'>
             {showRegisterPopup && <RegisterPopup onClose={closeRegisterPopup} />}
