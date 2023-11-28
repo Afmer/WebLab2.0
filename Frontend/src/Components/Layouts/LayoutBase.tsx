@@ -7,6 +7,7 @@ import { AppStore } from '../../AppStore';
 import axios from 'axios';
 import IdentityBase from '../../Interfaces/IdentityBase';
 import InitIdentity from '../Functions/InitIdentity';
+import FeedbackForm from '../FeedbackForm';
 interface ParentCompProps {
     renderBody: React.ReactNode
     appStore?: AppStore
@@ -29,6 +30,13 @@ const LayoutBase: React.FC<ParentCompProps> = (props) => {
     const closeLoginPopup = () => {
         setLoginShowPopup(false);
     }
+    const [showFeedbackFormPopup, setFeedbackFormPopup] = useState(false);
+    const openFeedbackFormPopup = () => {
+        setFeedbackFormPopup(true)
+    }
+    const closeFeedbackFormPopup = () => {
+        setFeedbackFormPopup(false)
+    }
     const logoutEvent = async () => {
         await axios.get('/api/Identity/Logout')
         props.appStore?.updateAuth({IsAuthorize: false, IsAdmin: false, Username: ""})
@@ -38,6 +46,7 @@ const LayoutBase: React.FC<ParentCompProps> = (props) => {
         <div className='layout-base'>
             {showRegisterPopup && <RegisterPopup onClose={closeRegisterPopup} />}
             {showLoginPopup && <LoginPopup onClose={closeLoginPopup} />}
+            {showFeedbackFormPopup && <FeedbackForm onClose={closeFeedbackFormPopup}/>}
             <table className='container-table'>
                 <tr className='bar-cell'>
                     <div className='bar-element'>
@@ -64,7 +73,7 @@ const LayoutBase: React.FC<ParentCompProps> = (props) => {
                                         {props.appStore?.authInfo !== null ?(
                                             props.appStore?.authInfo.IsAuthorize ?(
                                                 <>
-                                                    <td colSpan={2}><NavLink to="/Feedback"><button className='button'>Обратная связь</button></NavLink></td>
+                                                    <td colSpan={2}><button className='button' onClick={openFeedbackFormPopup}>Обратная связь</button></td>
                                                 </>
                                             ): (
                                                 <>
