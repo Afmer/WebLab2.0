@@ -54,7 +54,10 @@ const LayoutBase: React.FC<ParentCompProps> = (props) => {
                                                     <td><button className='button' onClick={openRegisterPopup}>Регистрация</button></td>
                                                 </>
                                             ): (
-                                                <td><button className='button' onClick={logoutEvent}>Выйти</button></td>
+                                                <>
+                                                    <td>{props.appStore?.authInfo.Username}</td>
+                                                    <td><button className='button' onClick={logoutEvent}>Выйти</button></td>
+                                                </>
                                         )) : <p>wait</p>}
                                     </tr>
                                 </table>
