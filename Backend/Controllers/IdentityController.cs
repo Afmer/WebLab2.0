@@ -52,7 +52,10 @@ public class IdentityController : ControllerBase
         if(HttpContext.User.Identity != null && HttpContext.User.Identity.Name != null)
         {
             var user = await _identityService.GetUserIdentityBaseInfo(HttpContext.User.Identity.Name);
-            return Ok(user);
+            if(user is null)
+                return Unauthorized();
+            var data = new {login = user.Login, role = user.Role};
+            return Ok(data);
         }
         else return Unauthorized();
     }
