@@ -86,7 +86,7 @@ const LayoutBase: React.FC<ParentCompProps> = (props) => {
                             <td><Link to="/Gallery">Галерея</Link></td>
                             <td><Link to="/Shows">Спектакли</Link></td>
                             <td><Link to="/Contacts">Контакты</Link></td>
-                            <td><Link to="/Feedback">Обратная связь</Link></td>
+                            <td><Link to="/News">Новости</Link></td>
                             </tr>
                         </table>
                         </div>
