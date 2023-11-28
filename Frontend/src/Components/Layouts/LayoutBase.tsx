@@ -44,6 +44,7 @@ const LayoutBase: React.FC<ParentCompProps> = (props) => {
                 }
             })
             .catch(error => {
+                props.appStore?.updateAuth({IsAuthorize: false, IsAdmin: false})
                 console.error('Error:', error);
             });
     }
