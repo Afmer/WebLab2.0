@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import RegisterPopup from '../RegisterPopup';
 import LoginPopup from '../LoginPopup';
 import { inject, observer } from 'mobx-react';
@@ -57,6 +57,17 @@ const LayoutBase: React.FC<ParentCompProps> = (props) => {
                                                 <>
                                                     <td>{props.appStore?.authInfo.Username}</td>
                                                     <td><button className='button' onClick={logoutEvent}>Выйти</button></td>
+                                                </>
+                                        )) : <p>wait</p>}
+                                    </tr>
+                                    <tr>
+                                        {props.appStore?.authInfo !== null ?(
+                                            props.appStore?.authInfo.IsAuthorize ?(
+                                                <>
+                                                    <td colSpan={2}><NavLink to="/Feedback"><button className='button'>Обратная связь</button></NavLink></td>
+                                                </>
+                                            ): (
+                                                <>
                                                 </>
                                         )) : <p>wait</p>}
                                     </tr>
