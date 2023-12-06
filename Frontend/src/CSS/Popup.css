@@ -8,6 +8,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 9999;
   }
   
   .popup .content {
@@ -50,6 +51,12 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
+  }
+
+  .popup .form-group textarea {
+    width: 100%;
+    resize: vertical;
+    max-height: 60vh
   }
   
   .popup .submit-button {
