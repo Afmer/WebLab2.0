@@ -141,15 +141,18 @@ public class DbManagerService : IDbManager
         };
         return (GetUserStatus.Success, result);
     }
-    public async Task AddFeedback(FeedbackModel model, string login)
+    public async Task<bool> AddFeedback(FeedbackModel model, string login)
     {
-        var feedback = new Feedback
-        {
-            UserId = login,
-            Label = model.Label,
-            Text = model.Text
-        };
-        _context.Feedbacks.Add(feedback);
-        await _context.SaveChangesAsync();
+        var result = await ExecuteInTransaction(async () => {
+            var feedback = new Feedback
+            {
+                UserId = login,
+                Label = model.Label,
+                Text = model.Text
+            };
+            _context.Feedbacks.Add(feedback);
+            await _context.SaveChangesAsync();
+        });
+        return result.Success;
     }
 }

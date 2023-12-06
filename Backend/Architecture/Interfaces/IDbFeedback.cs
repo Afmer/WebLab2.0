@@ -4,5 +4,5 @@ namespace Weblab.Architecture.Interfaces;
 
 public interface IDbFeedback
 {
-    public Task AddFeedback(FeedbackModel model, string login);
+    public Task<bool> AddFeedback(FeedbackModel model, string login);
 }

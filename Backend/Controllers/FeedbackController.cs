@@ -16,12 +16,15 @@ public class FeedbackController : ControllerBase
     }
     [HttpPost]
     [Authorize]
-    public IActionResult Index(FeedbackModel model)
+    public async Task<IActionResult> Index(FeedbackModel model)
     {
         if(ModelState.IsValid && HttpContext.User.Identity != null && HttpContext.User.Identity.Name != null)
         {
-            _dbManager.AddFeedback(model, HttpContext.User.Identity.Name);
-            return Ok();
+            var result = await _dbManager.AddFeedback(model, HttpContext.User.Identity.Name);
+            if(result)
+                return Ok();
+            else
+                return BadRequest();
         }
         else
         {
