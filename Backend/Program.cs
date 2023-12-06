@@ -84,6 +84,8 @@ builder.Services.AddScoped<IDbHome, DbManagerService>();
 builder.Services.AddScoped<IDbAuth, DbManagerService>();
 builder.Services.AddScoped<IDbShows, DbManagerService>();
 builder.Services.AddScoped<IDbFeedback, DbManagerService>();
+builder.Services.AddScoped<IDbFavorite, DbManagerService>();
+builder.Services.AddScoped<IFavoriteService, FavoriteService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IIdentityService, IdentityService>();
 var app = builder.Build();

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 using Weblab.Architecture.Enums;
 using Weblab.Architecture.Interfaces;
 using Weblab.Models;
@@ -154,5 +155,57 @@ public class DbManagerService : IDbManager
             await _context.SaveChangesAsync();
         });
         return result.Success;
+    }
+
+    public async Task<(bool Success, List<ShowModel>? Favorites)> AddFavorite(string login, Guid showId)
+    {
+        var favoriteShows = _context.FavoriteShows.AsNoTracking()
+            .Where(x => x.UserLogin == login)
+            .Select(x => x.Show)
+            .Select(x => new ShowModel{
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description,
+                LabelImage = x.LabelImage,
+                Date = x.Date
+            })
+            .ToList();
+        var favoriteShow = await _context.Shows.FindAsync(showId);
+        bool isContain = favoriteShows.Select(x => x.Id).Contains(showId);
+        if(isContain)
+        {
+            return (true, favoriteShows);
+        }
+        else if(favoriteShow == null)
+        {
+            return (false, null);
+        }
+        else
+        {
+            var addResult = await ExecuteInTransaction(async () => {
+                var favorite = new FavoriteShow{
+                    UserLogin = login,
+                    ShowId = favoriteShow.Id
+                };
+                await _context.FavoriteShows.AddAsync(favorite);
+                await _context.SaveChangesAsync();
+            });
+            if(addResult.Success)
+            {
+                var convertedFavoriteShow = new ShowModel{
+                    Id = favoriteShow.Id,
+                    Name = favoriteShow.Name,
+                    Description = favoriteShow.Description,
+                    LabelImage = favoriteShow.LabelImage,
+                    Date = favoriteShow.Date
+                };
+                favoriteShows.Add(convertedFavoriteShow);
+                return (true, favoriteShows);
+            }
+            else
+            {
+                return (false, null);
+            }
+        }
     }
 }

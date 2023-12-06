@@ -11,6 +11,7 @@ public class ApplicationContext : DbContext
     public DbSet<UserIdentityInfo> UserIdentities {get; set;}
     public DbSet<Show> Shows {get; set;}
     public DbSet<Feedback> Feedbacks {get; set;}
+    public DbSet<FavoriteShow> FavoriteShows {get; set;}
     private DateTime _getTimeNow => DateTime.UtcNow;
     public ApplicationContext(DbContextOptions<ApplicationContext> options)
     :base(options)
