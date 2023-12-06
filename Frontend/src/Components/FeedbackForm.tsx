@@ -1,12 +1,26 @@
 import '../CSS/Popup.css'
-import React from 'react';
+import React, { ChangeEvent, useState } from 'react';
 interface FeedbackFormPopupProps {
     onClose: () => void;
   }
+
+interface FormData {
+  message: string;
+}
 const FeedbackForm: React.FC<FeedbackFormPopupProps> = ({onClose}) => {
+  const [formData, setFormData] = useState<FormData>({
+    message: ''
+  });
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Добавьте здесь логику обработки отправки формы, например, отправку данных на сервер
+  };
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    })
   };
 
   return (
@@ -18,7 +32,7 @@ const FeedbackForm: React.FC<FeedbackFormPopupProps> = ({onClose}) => {
             <label htmlFor="message" className="label">
               Сообщение:
             </label>
-            <textarea id="message" name="message" rows={4} required></textarea>
+            <textarea rows={4} value={formData.message} onChange={handleChange} id="message" name="message" required></textarea>
           </div>
           <button type="submit" className="submit-button">
             Отправить
