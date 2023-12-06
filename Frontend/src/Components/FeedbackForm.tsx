@@ -1,3 +1,4 @@
+import axios from 'axios';
 import '../CSS/Popup.css'
 import React, { ChangeEvent, useState } from 'react';
 interface FeedbackFormPopupProps {
@@ -5,17 +6,28 @@ interface FeedbackFormPopupProps {
   }
 
 interface FormData {
-  message: string;
+  text: string;
+  label: string;
 }
 const FeedbackForm: React.FC<FeedbackFormPopupProps> = ({onClose}) => {
   const [formData, setFormData] = useState<FormData>({
-    message: ''
+    text: '',
+    label: ''
   });
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Добавьте здесь логику обработки отправки формы, например, отправку данных на сервер
+    try {
+      const response = await axios.post('/api/Feedback', formData);
+
+      if (response.status === 200) {
+        console.log('Форма отправлена');
+        onClose();
+      }
+    } catch (error) {
+      console.error('Ошибка:', error);
+    }
   };
-  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement> | ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -29,10 +41,14 @@ const FeedbackForm: React.FC<FeedbackFormPopupProps> = ({onClose}) => {
         <span className="close-btn" onClick={onClose}>&times;</span>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="message" className="label">
+            <label htmlFor="label" className="label">
+              Заголовок:
+            </label>
+            <input id='label' name='label' value={formData.label} onChange={handleChange} type='text' maxLength={50}/>
+            <label htmlFor="text" className="label">
               Сообщение:
             </label>
-            <textarea rows={4} value={formData.message} onChange={handleChange} id="message" name="message" required></textarea>
+            <textarea rows={4} value={formData.text} onChange={handleChange} id="text" name="text" required></textarea>
           </div>
           <button type="submit" className="submit-button">
             Отправить
