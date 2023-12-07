@@ -211,4 +211,29 @@ public class DbManagerService : IDbManager
             }
         }
     }
+    public async Task<(bool Success, List<ShowModel>? Favorites)> DeleteFavorite(string login, Guid showId)
+    {
+        var favoriteShow = await _context.Shows.FindAsync(showId);
+        if(favoriteShow == null)
+            return (false, null);
+        var favoriteShows = GetFavoriteShows(login);
+        bool isContain = favoriteShows.Select(x => x.Id).Contains(showId);
+        if(!isContain)
+        {
+            return (true, favoriteShows);
+        }
+        else
+        {
+            var deleteResult = await ExecuteInTransaction(async () => {
+                var removalShow = _context.FavoriteShows.Where(x => x.UserLogin == login && x.ShowId == showId).First();
+                _context.FavoriteShows.Remove(removalShow!);
+                await _context.SaveChangesAsync();
+            });
+            favoriteShows = favoriteShows.Where(x => x.Id != showId).ToList();
+            if(deleteResult.Success)
+                return (true, favoriteShows);
+            else
+                return (false, null);
+        }
+    }
 }

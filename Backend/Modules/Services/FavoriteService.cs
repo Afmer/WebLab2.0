@@ -22,4 +22,16 @@ public class FavoriteService : IFavoriteService
             return (false, null);
         }
     }
+    public async Task<(bool Success, List<ShowModel>? FavoriteShows)> DeleteFavorite(string login, Guid showId)
+    {
+        try
+        {
+            var result = await _dbManager.DeleteFavorite(login, showId);
+            return(result.Success, result.Favorites);
+        }
+        catch
+        {
+            return (false, null);
+        }
+    }
 }

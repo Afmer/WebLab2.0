@@ -36,4 +36,25 @@ public class FavoriteShowController : ControllerBase
             return BadRequest();
         }
     }
+    [HttpGet]
+    public async Task<IActionResult> Delete(Guid showId)
+    {
+        if(ModelState.IsValid && HttpContext.User.Identity != null && HttpContext.User.Identity.Name != null)
+        {
+            string login = HttpContext.User.Identity.Name;
+            var result = await _favoriteService.DeleteFavorite(login, showId);
+            if(result.Success)
+            {
+                return Ok(result.FavoriteShows);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+        else
+        {
+            return BadRequest();
+        }
+    }
 }
