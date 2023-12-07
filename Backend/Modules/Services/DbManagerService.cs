@@ -156,10 +156,9 @@ public class DbManagerService : IDbManager
         });
         return result.Success;
     }
-
-    public async Task<(bool Success, List<ShowModel>? Favorites)> AddFavorite(string login, Guid showId)
+    public List<ShowModel> GetFavoriteShows(string login)
     {
-        var favoriteShows = _context.FavoriteShows.AsNoTracking()
+        return _context.FavoriteShows.AsNoTracking()
             .Where(x => x.UserLogin == login)
             .Select(x => x.Show)
             .Select(x => new ShowModel{
@@ -170,6 +169,10 @@ public class DbManagerService : IDbManager
                 Date = x.Date
             })
             .ToList();
+    }
+    public async Task<(bool Success, List<ShowModel>? Favorites)> AddFavorite(string login, Guid showId)
+    {
+        var favoriteShows = GetFavoriteShows(login);
         var favoriteShow = await _context.Shows.FindAsync(showId);
         bool isContain = favoriteShows.Select(x => x.Id).Contains(showId);
         if(isContain)
