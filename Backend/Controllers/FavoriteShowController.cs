@@ -57,4 +57,18 @@ public class FavoriteShowController : ControllerBase
             return BadRequest();
         }
     }
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+        if(ModelState.IsValid && HttpContext.User.Identity != null && HttpContext.User.Identity.Name != null)
+        {
+            string login = HttpContext.User.Identity.Name;
+            var result = _favoriteService.ShowFavorite(login);
+            return Ok(result);
+        }
+        else
+        {
+            return BadRequest();
+        }
+    }
 }

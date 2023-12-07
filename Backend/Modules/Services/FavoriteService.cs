@@ -34,4 +34,8 @@ public class FavoriteService : IFavoriteService
             return (false, null);
         }
     }
+    public List<ShowModel> ShowFavorite(string login)
+    {
+        return _dbManager.GetFavoriteShows(login);
+    }
 }
