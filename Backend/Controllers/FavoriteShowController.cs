@@ -6,7 +6,7 @@ using Weblab.Models;
 namespace Weblab.Controllers;
 
 [ApiController]
-[Route("api/[controller]/{action}")]
+[Route("api/[controller]/{action=Index}")]
 [Authorize]
 public class FavoriteShowController : ControllerBase
 {
@@ -58,7 +58,7 @@ public class FavoriteShowController : ControllerBase
         }
     }
     [HttpGet]
-    public IActionResult GetAll()
+    public IActionResult Index()
     {
         if(ModelState.IsValid && HttpContext.User.Identity != null && HttpContext.User.Identity.Name != null)
         {
