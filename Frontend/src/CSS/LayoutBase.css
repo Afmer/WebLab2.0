@@ -126,8 +126,29 @@
     cursor: pointer;
     transition: background-color 0.3s;
     width: 10vw;
+    height: 4vh;
   }
   
 .layout-base .button:hover {
     background-color: #c9c9c9;
+}
+
+.layout-base .mini-button-group button {
+    display: inline-block;
+    background-color: #ffffff;
+    height: 4vh;
+    width: 4vh;
+    border: none;
+    border-radius: 1vh;
+}
+
+.layout-base .mini-button-group button:hover {
+    background-color: #c9c9c9;
+}
+
+.layout-base .mini-button-group .favorite {
+    background-image: url('StaticImages/blackHeart.png');
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: center;
 }

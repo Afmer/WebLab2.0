@@ -70,15 +70,30 @@ const LayoutBase: React.FC<ParentCompProps> = (props) => {
                                         )) : <p>wait</p>}
                                     </tr>
                                     <tr>
-                                        {props.appStore?.authInfo !== null ?(
-                                            props.appStore?.authInfo.IsAuthorize ?(
-                                                <>
-                                                    <td colSpan={2}><button className='button' onClick={openFeedbackFormPopup}>Обратная связь</button></td>
-                                                </>
-                                            ): (
-                                                <>
-                                                </>
-                                        )) : <p>wait</p>}
+                                            {props.appStore?.authInfo !== null ?(
+                                                props.appStore?.authInfo.IsAuthorize ?(
+                                                    <>
+                                                        <td>
+                                                            <table>
+                                                            <tr className='mini-button-group'>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td>
+                                                                    <Link to="/Favorites">
+                                                                        <button className='favorite'></button>
+                                                                    </Link>
+                                                                </td>
+                                                            </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td>
+                                                            <button className='button' onClick={openFeedbackFormPopup}>Обратная связь</button>
+                                                        </td>
+                                                    </>
+                                                ): (
+                                                    <>
+                                                    </>
+                                            )) : <p>wait</p>}
                                     </tr>
                                 </table>
                             </td>
