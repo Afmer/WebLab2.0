@@ -12,6 +12,7 @@ import Show from './Components/Show';
 import { Provider } from 'mobx-react';
 import { appStore } from './AppStore';
 import AddShow from './Components/AddShow';
+import Favorites from './Components/Favorites';
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
           <Route path="/Show/:id" element={<LayoutBase renderBody={<Show/>}/>}/>
           <Route path="/About" element={<LayoutBase renderBody={<About/>}/>}/>
           <Route path="/AddShow" element={<LayoutBase renderBody={<AddShow/>}/>}/>
+          <Route path="/Favorites" element={<LayoutBase renderBody={<Favorites/>}/>}/>
         </Routes>
         </BrowserRouter>
       </Provider>
