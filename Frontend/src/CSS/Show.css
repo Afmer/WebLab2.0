@@ -2,6 +2,7 @@
     width: 50%;
     height: 100%;
     position: relative;
+    padding-top: 5vh;
 }
 
 .show tr {
@@ -10,7 +11,6 @@
 
 .show table {
     height: 100%;
-    padding-top: 5vh;
 }
 
 .show .background {
@@ -37,12 +37,41 @@
 
 .show .left-cell {
     padding-right: 1vw;
+    height: 60vh;
 }
 
 .show .right-cell {
     padding-left: 1vw;
+    height: 60vh;
 }
 
 .show .description {
-    padding: 2vh;
+    padding-left: 2vh;
+    padding-right: 2vh;
+    height: 100%;
+    overflow: auto;
+}
+
+.show .slider svg{
+    width: 4vh;
+    height: auto;
+}
+.show .background-slider {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.show .slider {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    max-height: 100%;
+}
+
+.show .slider .image-gallery-slides {
+    border-radius: 2.5vh;
+}
+
+.show .slider .image-gallery-image {
+    height: 70vh;
 }
