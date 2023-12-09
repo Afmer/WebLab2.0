@@ -1,0 +1,27 @@
+.favorite-pin-button {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.favorite-pin-button button {
+    margin-top: 8%;
+    margin-left: 95%;
+    background-color: #ffffff;
+    height: 4vh;
+    width: 4vh;
+    border: none;
+    border-radius: 1vh;
+    position: absolute;
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.favorite-pin-button .unpinned {
+    background-image: url('./StaticImages/unpinnedFavorite.png');
+}
+
+.favorite-pin-button .pinned {
+    background-image: url('./StaticImages/pinnedFavorite.png')
+}

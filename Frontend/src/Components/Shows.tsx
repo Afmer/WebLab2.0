@@ -1,24 +1,25 @@
 import axios from 'axios';
-import React, { Component } from 'react';
+import React, { Component, MouseEventHandler } from 'react';
 import '../CSS/Shows.css'
+import '../CSS/FavoritePinButton.css'
 import { Routes, Route, Link } from 'react-router-dom';
-interface ShortShow {
-    id : string,
-    name : string
-}
+import { inject, observer } from 'mobx-react';
+import { AppStore } from '../AppStore';
+import Favorites from './Favorites';
+import ShortShow from '../Interfaces/ShortShow';
 interface States {
-    Shows: ShortShow[]
+    Shows: ShortShow[];
 }
-class Shows extends Component<{}, States> {
+interface Props {
+    appStore?: AppStore
+}
+class Shows extends Component<Props, States> {
     protected static _shows : ShortShow[] | null = null;
     constructor(props: any) {
         super(props);
         if(Shows._shows === null)
         {
-            this.state = {
-                Shows: []
-            };
-            const response = axios.get('api/Shows')
+            const showResponse = axios.get('api/Shows')
                 .then(response => {
                     Shows._shows = response.data as ShortShow[]
                     this.setState({Shows: response.data as ShortShow[]});
@@ -27,10 +28,39 @@ class Shows extends Component<{}, States> {
                     console.error('Произошла ошибка:', error);
                 });
         }
-        else
+        this.state ={
+            Shows: Shows._shows !== null ? (Shows._shows) : ([]),
+        }
+    }
+    handleFavoriteClick = (show: ShortShow) => {
+        const element = document.getElementById('favorite-' + show.id);
+        if(element)
         {
-            this.state = {
-                Shows: Shows._shows
+            if(element.className === 'unpinned')
+            {
+                const pinResponse = axios.get('api/FavoriteShow/Add?showId=' + show.id)
+                .then(response =>{
+                    if (response.status === 200)
+                    {
+                        this.props.appStore?.addFavoriteShow(show);
+                    }
+                })
+                .catch(error => {
+                    console.error('Произошла ошибка:', error);
+                });
+            }
+            else if(element.className === 'pinned')
+            {
+                const pinResponse = axios.get('api/FavoriteShow/Delete?showId=' + show.id)
+                .then(response =>{
+                    if (response.status === 200)
+                    {
+                        this.props.appStore?.removeFavoriteShow(show)
+                    }
+                })
+                .catch(error => {
+                    console.error('Произошла ошибка:', error);
+                });
             }
         }
     }
@@ -40,7 +70,17 @@ class Shows extends Component<{}, States> {
             <table>
                 {this.state.Shows.map((item, index) => (
                     <tr><td>
-                        <div className='background'><Link to={"/Show/" + item.id}>{item.name}</Link></div>
+                        <div className='background'>
+                            {this.props.appStore?.authInfo?.IsAuthorize ?(
+                                <div className='favorite-pin-button'>
+                                    <button id={'favorite-' + item.id} 
+                                            className={this.props.appStore.favoriteShows?.find((obj) => obj.id === item.id) ?('pinned'):('unpinned')} 
+                                            onClick={(event) => {this.handleFavoriteClick({id: item.id, name: item.name})}}>
+                                    </button>
+                                </div>
+                            ): null}
+                            <Link to={"/Show/" + item.id}>{item.name}</Link>
+                        </div>
                     </td></tr>
                 ))}
             </table>
@@ -49,4 +89,4 @@ class Shows extends Component<{}, States> {
     }
 }
 
-export default Shows
+export default inject('appStore')(observer(Shows))
