@@ -8,7 +8,9 @@ using Microsoft.IdentityModel.Tokens;
 using MVCSite.Features.Services;
 using Weblab.Architecture.Configurations;
 using Weblab.Architecture.Constants;
+using Weblab.Architecture.Enums;
 using Weblab.Architecture.Interfaces;
+using Weblab.Modules.AuthorizationRequirement;
 using Weblab.Modules.DB;
 using Weblab.Modules.Services;
 var builder = WebApplication.CreateBuilder(args);
@@ -78,6 +80,8 @@ builder.Services.AddAuthorization(options =>
     options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
     .RequireAuthenticatedUser()
     .Build();
+    options.AddPolicy(PolicyNames.Admin, policy => policy.Requirements.Add(new RoleHierarсhyRequirement(Role.Admin)));
+    options.AddPolicy(PolicyNames.User, policy => policy.Requirements.Add(new RoleHierarсhyRequirement(Role.User)));
 });
 builder.Services.AddScoped<IHash, HashService>();
 builder.Services.AddScoped<IDbHome, DbManagerService>();
@@ -85,9 +89,11 @@ builder.Services.AddScoped<IDbAuth, DbManagerService>();
 builder.Services.AddScoped<IDbShows, DbManagerService>();
 builder.Services.AddScoped<IDbFeedback, DbManagerService>();
 builder.Services.AddScoped<IDbFavorite, DbManagerService>();
+builder.Services.AddScoped<IDbAuthRole, DbManagerService>();
 builder.Services.AddScoped<IFavoriteService, FavoriteService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IIdentityService, IdentityService>();
+builder.Services.AddTransient<IAuthorizationHandler, RoleHierarсhyHandler>();
 var app = builder.Build();
 
 using(var scope = app.Services.CreateScope())

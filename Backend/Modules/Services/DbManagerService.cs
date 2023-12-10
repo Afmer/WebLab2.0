@@ -236,4 +236,12 @@ public class DbManagerService : IDbManager
                 return (false, null);
         }
     }
+    public async Task<Role?> GetRole(string login)
+    {
+        var user = await _context.UserIdentities.FindAsync(login);
+        if(user != null)
+            return user.Role;
+        else
+            return null;
+    }
 }
