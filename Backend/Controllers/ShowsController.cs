@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Weblab.Architecture.Constants;
 using Weblab.Architecture.Enums;
 using Weblab.Architecture.Interfaces;
+using Weblab.Models;
 
 namespace Weblab.Controllers;
 
@@ -46,5 +49,17 @@ public class ShowsController : ControllerBase
         {
             return NotFound();
         }
+    }
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> Add([FromForm]AddShowModel model)
+    {
+        if(ModelState.IsValid)
+        {
+            var result = await _dbManager.AddShow(model);
+            if(result.Success)
+                return Ok(new {Success = true, ShowId = result.ShowId});
+        }
+        return BadRequest(new {Success = false});
     }
 }

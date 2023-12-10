@@ -12,6 +12,8 @@ public class DbManagerService : IDbManager
 {
     private readonly ApplicationContext _context;
     private readonly IHash _hashService;
+    private readonly IImageService _imageService;
+    private DateTime CurrentDateTime => DateTime.UtcNow;
     private async Task<(bool Success, Exception? Exception)> ExecuteInTransaction(Func<Task> func)
     {
         using var transaction = await _context.Database.BeginTransactionAsync();
@@ -27,10 +29,11 @@ public class DbManagerService : IDbManager
             return (false, e);
         }
     }
-    public DbManagerService(ApplicationContext context, IHash hashService)
+    public DbManagerService(ApplicationContext context, IHash hashService, IImageService imageService)
     {
         _context = context;
         _hashService = hashService;
+        _imageService = imageService;
     }
 
     public (GetHomeHtmlStatus Status, string? Result) GetHomeHtml()
@@ -243,5 +246,46 @@ public class DbManagerService : IDbManager
             return user.Role;
         else
             return null;
+    }
+    public async Task<(bool Success, Guid? ShowId)> AddShow(AddShowModel model)
+    {
+        var context = new ValidationContext(model, null, null);
+        var results = new List<ValidationResult>();
+        if(!Validator.TryValidateObject(model, context, results, true))
+            return (false, null);
+        var labelImage = await _imageService.Upload(model.LabelImage, "Shows");
+        var images = new (Guid Id, ImageUploadStatusCode Status)[model.Images != null ? model.Images.Length: 0];
+        if(images.Length > 0)
+            for(int i = 0; i < images.Length; i++)
+                images[i] =  await _imageService.Upload(model.Images![i], "ShowsExtraImages");
+        bool isExtraImagesValid = images.Where(x => x.Status != ImageUploadStatusCode.Success)
+            .Count() == 0;
+        if(labelImage.Status == ImageUploadStatusCode.Success && isExtraImagesValid)
+        {
+            var show = new Show
+            {
+                Id = Guid.NewGuid(),
+                Name = model.Name,
+                LabelImage = labelImage.Id,
+                Description = model.Description,
+                Date = CurrentDateTime
+            };
+            var imagesForDb = images.Select(x => new ShowsImage{
+                Id = x.Id,
+                ShowId = show.Id
+            })
+            .ToArray();
+            var transaction = await ExecuteInTransaction(async() => {
+                await _context.Shows.AddAsync(show);
+                await _context.ShowsImages.AddRangeAsync(imagesForDb);
+                await _context.SaveChangesAsync();
+            });
+            if(transaction.Success)
+                return (true, show.Id);
+        }
+        await _imageService.Delete(labelImage.Id, "Shows");
+        foreach(var image in images)
+            await _imageService.Delete(image.Id, "ShowsExtraImages");
+        return (false, null);
     }
 }
