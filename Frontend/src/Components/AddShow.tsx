@@ -72,28 +72,42 @@ function AddShow() {
     return (
         <div className='add-show'>
             <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="name">Имя пользователя</label>
-                    <input type="text" id='name'  name='name' value={formData.name} onChange={handleChange}/>
-                </div>
-                <div>
-                    <label htmlFor="date">Дата проведения</label>
-                    <input type="date" id='date' name='date' value={formData.date.toString()} onChange={handleChange}/>
-                </div>
-                <div>
-                    <label htmlFor="description">Описание</label>
-                    <textarea id='description' name='description' value={formData.description} onChange={handleChange}/>
-                </div>
-                <div>
-                    <label htmlFor="labelImage">Обложка</label>
-                    <input type='file' id='labelImage' name='labelImage' onChange={handleLabelImagesChange}/>
-                </div>
-                <div>
-                    <ImageSelector onUpdate={handleShowsImagesChange}/>
-                </div>
-                <div>
-                    <input type="submit" />
-                </div>
+                <table>
+                    <tr>
+                        <td>
+                            <div className='left-cell'>
+                                <div className='background'>
+                                    <div className='form-container'>
+                                    <div className="form-group">
+                                        <label htmlFor="name">Название</label>
+                                        <input type="text" id='name'  name='name' value={formData.name} onChange={handleChange}/>
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="date">Дата проведения</label>
+                                        <input type="date" id='date' name='date' value={formData.date.toString()} onChange={handleChange}/>
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="description">Описание</label>
+                                        <textarea id='description' name='description' value={formData.description} onChange={handleChange}/>
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="labelImage">Обложка</label>
+                                        <input type='file' id='labelImage' name='labelImage' onChange={handleLabelImagesChange}/>
+                                    </div>
+                                    <div className="form-group">
+                                        <input type="submit" />
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                        <div className='right-cell'>
+                            <ImageSelector onUpdate={handleShowsImagesChange}/>
+                        </div>
+                        </td>
+                    </tr>
+                </table>
             </form>
         </div>
     )

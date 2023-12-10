@@ -3,25 +3,30 @@
     border: 1vh solid #ffffff;
     border-radius: 2.5vh;
     background-size: cover;
-    width: 100%;
-    min-height: 30vh;
+    height: 100%;
 }
 
 .image-selector .container {
     display: flex;
     flex-wrap: wrap;
-    min-height: 17vh;
+    height: 85%;
+    width: 100%;
+    overflow: auto;
+    
 }
 
 .image-selector .item {
     margin: 2vh;
-    width: 13vh;
-    height: 13vh;
+    width: 10vh;
+    height: 10vh;
+    flex-shrink: 0;
 }
 
 .image-selector .item-icon {
     width: 10vh;
     height: 10vh;
+    max-width: 100%; /* Максимальная ширина изображения */
+    max-height: 100%; /* Максимальная высота изображения */
 }
 
 .image-selector .item-name {
@@ -29,10 +34,10 @@
     overflow: hidden; /* Скрываем часть текста, которая не помещается в блок */
     text-overflow: ellipsis; /* Добавляем многоточие для обозначения обрезанного текста */
 }
+
 .image-selector .image-uploader-button {
-    padding-top: 7vh;
-    padding-left: 1vw;
-    padding-bottom: 2vh;
+    padding-left: 1vh;
+    padding-top: 3vh;
 }
 .image-selector .image-uploader-button .image-input {
     opacity: 0;
