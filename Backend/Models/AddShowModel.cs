@@ -12,6 +12,8 @@ public class AddShowModel
     [MaxLength(ShowConstants.DescriptionMaxLength)]
     public string Description {get; set;} = null!;
     [Required]
+    public DateTime Date {get; set;}
+    [Required]
     public IFormFile LabelImage {get; set;} = null!;
     public IFormFile[]? Images {get; set;}
 }

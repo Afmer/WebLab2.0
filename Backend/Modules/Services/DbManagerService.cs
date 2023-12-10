@@ -268,7 +268,7 @@ public class DbManagerService : IDbManager
                 Name = model.Name,
                 LabelImage = labelImage.Id,
                 Description = model.Description,
-                Date = CurrentDateTime
+                Date = model.Date
             };
             var imagesForDb = images.Select(x => new ShowsImage{
                 Id = x.Id,
