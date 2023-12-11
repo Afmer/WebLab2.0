@@ -74,10 +74,12 @@ const LayoutBase: React.FC<ParentCompProps> = (props) => {
                                                 props.appStore?.authInfo.IsAuthorize ?(
                                                     <>
                                                         <td>
-                                                            <table>
-                                                            <tr className='mini-button-group'>
+                                                            <table className='mini-button-group'>
+                                                            <tr>
                                                                 <td></td>
-                                                                <td></td>
+                                                                <td>{props.appStore?.authInfo.IsAdmin ?(
+                                                                <Link to="/AddShow"><button className='add-show'></button></Link>
+                                                                ): null}</td>
                                                                 <td>
                                                                     <Link to="/Favorites">
                                                                         <button className='favorite'></button>

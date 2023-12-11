@@ -133,6 +133,10 @@
     background-color: #c9c9c9;
 }
 
+.layout-base .mini-button-group td{
+    padding-left: 1vh;
+}
+
 .layout-base .mini-button-group button {
     display: inline-block;
     background-color: #ffffff;
@@ -151,4 +155,11 @@
     background-size: 80%;
     background-repeat: no-repeat;
     background-position: center;
+}
+
+.layout-base .mini-button-group .add-show {
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('StaticImages/plus.png');
 }
