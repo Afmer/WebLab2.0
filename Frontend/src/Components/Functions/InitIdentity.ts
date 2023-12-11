@@ -10,7 +10,7 @@ const InitIdentity = async (appStore: AppStore) => {
             else
             {
                 const data : IdentityBase = response.data;
-                appStore?.updateAuth({IsAuthorize: true, IsAdmin: false, Username: data.login})
+                appStore?.updateAuth({IsAuthorize: true, IsAdmin: response.data.role === 0, Username: data.login})
             }
         })
         .catch(error => {
