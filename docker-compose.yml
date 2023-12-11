@@ -40,3 +40,10 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
+  sphinx:
+    image: sphinx-search
+    build:
+      context: ./SphinxSearch
+      dockerfile: Dockerfile
+    ports:
+      - 9311:9306
