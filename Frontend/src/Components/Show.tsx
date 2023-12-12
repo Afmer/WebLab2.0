@@ -45,7 +45,7 @@ const Show: React.FC = () => {
                 console.error('Произошла ошибка:', error);
             });
         
-    }, []);
+    }, [params]);
     return (
         <div className='show'>
             <table>
