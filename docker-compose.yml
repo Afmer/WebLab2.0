@@ -47,3 +47,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - 9311:9306
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
