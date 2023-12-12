@@ -10,6 +10,7 @@ interface ShowData {
     description: string,
     date: Date
     labelImage: string
+    images: string[]
 }
 const Show: React.FC = () => {
     const [show, setShow] = useState<ShowData>();
@@ -38,7 +39,8 @@ const Show: React.FC = () => {
                     name: data.name,
                     description: data.description,
                     date: new Date(data.date),
-                    labelImage: data.labelImage
+                    labelImage: data.labelImage,
+                    images: data.images
                 });
             })
             .catch(error => {
@@ -46,6 +48,20 @@ const Show: React.FC = () => {
             });
         
     }, [params]);
+    const getImages  = () => {
+        if(show !== undefined && show.images !== undefined)
+        {
+            var result = show.images.map(x => {
+                return {
+                    original: `/api/Image/Show?id=${x}&imageArea=ShowsExtraImages`,
+                    thumbnail: `/api/Image/Show?id=${x}&imageArea=ShowsExtraImages`
+                }
+            });
+            return result
+        }
+        else
+            return []
+    }
     return (
         <div className='show'>
             <table>
@@ -67,7 +83,7 @@ const Show: React.FC = () => {
                 <tr>
                     <td colSpan={2}>
                         <div className='background background-slider'>
-                            <ImageGallery items={images} showPlayButton={false} additionalClass='slider'/>
+                            <ImageGallery items={getImages()} showPlayButton={false} additionalClass='slider'/>
                         </div>
                     </td>
                 </tr>

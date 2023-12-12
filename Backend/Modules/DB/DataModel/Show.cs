@@ -21,4 +21,5 @@ public class Show
     public string Description {get; set;} = null!;
     [Required]
     public DateTime Date {get; set;}
+    public ICollection<ShowsImage>? Images {get; set;}
 }

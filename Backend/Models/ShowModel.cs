@@ -11,4 +11,5 @@ public class ShowModel : ShortShowModel
     public Guid LabelImage {get; set;}
     [Required]
     public DateTime Date {get; set;}
+    public Guid[]? Images {get; set;}
 }

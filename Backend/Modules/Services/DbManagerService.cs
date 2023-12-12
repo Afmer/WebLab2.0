@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
 using Weblab.Architecture.Enums;
 using Weblab.Architecture.Interfaces;
@@ -81,12 +82,11 @@ public class DbManagerService : IDbManager
         }
         else return RegisterStatus.InvalidModel;
     }
-
     public (GetShowStatus Status, ShowModel? Show) GetShow(Guid id)
     {
         try
         {
-            var show = _context.Shows.Find(id);
+            var show = _context.Shows.Include(x => x.Images).Where(x => x.Id == id).First();
             if(show != null)
             {
                 var model = new ShowModel
@@ -95,7 +95,8 @@ public class DbManagerService : IDbManager
                     Name = show.Name,
                     Description = show.Description,
                     Date = show.Date,
-                    LabelImage = show.LabelImage
+                    LabelImage = show.LabelImage,
+                    Images = show.Images != null ? show.Images.Select(x => x.Id).ToArray() : null
                 };
                 return (GetShowStatus.Success, model);
             }
@@ -163,13 +164,16 @@ public class DbManagerService : IDbManager
     {
         return _context.FavoriteShows.AsNoTracking()
             .Where(x => x.UserLogin == login)
+            .Include(x => x.Show)
+            .Include(x => x.Show.Images)
             .Select(x => x.Show)
             .Select(x => new ShowModel{
                 Id = x.Id,
                 Name = x.Name,
                 Description = x.Description,
                 LabelImage = x.LabelImage,
-                Date = x.Date
+                Date = x.Date,
+                Images = x.Images != null ? x.Images.Select(x => x.Id).ToArray() : null
             })
             .ToList();
     }
@@ -203,7 +207,8 @@ public class DbManagerService : IDbManager
                     Name = favoriteShow.Name,
                     Description = favoriteShow.Description,
                     LabelImage = favoriteShow.LabelImage,
-                    Date = favoriteShow.Date
+                    Date = favoriteShow.Date,
+                    Images = favoriteShow.Images != null ? favoriteShow.Images.Select(x => x.Id).ToArray() : null
                 };
                 favoriteShows.Add(convertedFavoriteShow);
                 return (true, favoriteShows);
