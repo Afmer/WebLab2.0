@@ -15,5 +15,13 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
   </ItemGroup>
+  <Target Name="CopyImagesFolder" AfterTargets="AfterPublish">
+    <ItemGroup>
+      <ImageFiles Include="./DemoAppData/Shows/*" />
+      <ExtraImageFiles Include="./DemoAppData/ShowsExtraImages/*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ImageFiles)" DestinationFolder="$(PublishDir)AppData/Shows" />
+    <Copy SourceFiles="@(ExtraImageFiles)" DestinationFolder="$(PublishDir)AppData/ShowsExtraImages" />
+  </Target>
 
 </Project>
