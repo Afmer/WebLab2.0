@@ -93,6 +93,8 @@ builder.Services.AddScoped<IDbAuthRole, DbManagerService>();
 builder.Services.AddScoped<IFavoriteService, FavoriteService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IIdentityService, IdentityService>();
+builder.Services.AddScoped<ISearchService, SphinxService>();
+builder.Services.AddScoped<ISphinxConnector, SphinxConnectorService>();
 builder.Services.AddTransient<IAuthorizationHandler, RoleHierarсhyHandler>();
 var app = builder.Build();
 
