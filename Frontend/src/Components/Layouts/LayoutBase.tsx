@@ -108,7 +108,7 @@ const LayoutBase: React.FC<ParentCompProps> = (props) => {
                 <tr className="top-menu-cell">
                     <div className='top-menu-element'>
                         <div className='background'>
-                        <table className='link-table'>
+                        <table className='link-table base-href'>
                             <tr>
                             <td><Link to="/Gallery">Галерея</Link></td>
                             <td><Link to="/Shows">Спектакли</Link></td>

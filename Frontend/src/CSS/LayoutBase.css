@@ -38,18 +38,18 @@
     margin-top: 1vh;
 }
 
-.layout-base a {
+.layout-base .base-href a {
     color: #000000; /* Цвет текста ссылок */
     text-decoration: none; /* Убрать подчеркивание ссылок */
     position: relative; /* Позиционирование ссылок */
 }
 
-.layout-base a:hover {
+.layout-base .base-href a:hover {
     color: #666666; /* Измененный цвет текста при наведении */
 }
 
 /* Добавление эффекта свечения */
-.layout-base a:before {
+.layout-base .base-href a:before {
     content: ""; /* Создать пустой элемент перед ссылкой */
     position: absolute;
     width: 100%;
@@ -64,7 +64,7 @@
 }
 
 /* Эффект при наведении */
-.layout-base a:hover:before {
+.layout-base .base-href a:hover:before {
     visibility: visible; /* Сделать линию видимой */
     transform: scaleX(1); /* Растянуть линию по горизонтали */
     transform-origin: bottom left; /* Изменить ось масштабирования */
