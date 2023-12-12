@@ -54,9 +54,10 @@ public class ApplicationContext : DbContext
             Date = _getTimeNow + TimeSpan.FromDays(1),
             LabelImage = new Guid("e9aab09d-4cb6-4d13-808d-671fff8e701c")
         };
+        var guid = Guid.NewGuid();
         var secondShow = new Show
         {
-            Id = Guid.NewGuid(),
+            Id = guid,
             Name = "Магия Востока: Заколдованный Лотос",
             Description = "\"Магия Востока: Заколдованный Лотос\" - это загадочное представление, полное волшебства, тайн и неожиданных сюжетных поворотов. " +
             "Зрители будут перенесены в древний восточный мир, где магия пронизывает каждый аспект жизни. " +
@@ -64,6 +65,23 @@ public class ApplicationContext : DbContext
             Date = _getTimeNow + TimeSpan.FromDays(2),
             LabelImage = new Guid("fcece7a5-914f-4881-8fd9-7ac3a93daada")
         };
+        var firstImage = new ShowsImage{
+            Id = new Guid("154dd480-33da-428b-be71-250e41f0f0e5"),
+            ShowId = guid
+        };
+        var secondImage = new ShowsImage{
+            Id = new Guid("700298ae-4d4e-4075-9ae5-cc3220bb9259"),
+            ShowId = guid
+        };
+        var thirdImage = new ShowsImage{
+            Id = new Guid("f66564e8-0dc6-41ab-a7fd-09d7fb27eb39"),
+            ShowId = guid
+        };
+        modelBuilder.Entity<ShowsImage>().HasData(
+            firstImage,
+            secondImage,
+            thirdImage
+        );
         var thirdShow = new Show
         {
             Id = Guid.NewGuid(),
