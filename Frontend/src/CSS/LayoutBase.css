@@ -21,8 +21,8 @@
     margin-left: 20vw;
 }
 
-.layout-base .bar-element td{
-    width: 50%;
+.layout-base .bar-element tr {
+    width: 100%;
 }
 
 .layout-base .top-menu-cell {
@@ -38,18 +38,18 @@
     margin-top: 1vh;
 }
 
-.layout-base .link-table a {
+.layout-base a {
     color: #000000; /* Цвет текста ссылок */
     text-decoration: none; /* Убрать подчеркивание ссылок */
     position: relative; /* Позиционирование ссылок */
 }
 
-.layout-base .link-table a:hover {
+.layout-base a:hover {
     color: #666666; /* Измененный цвет текста при наведении */
 }
 
 /* Добавление эффекта свечения */
-.layout-base .link-table a:before {
+.layout-base a:before {
     content: ""; /* Создать пустой элемент перед ссылкой */
     position: absolute;
     width: 100%;
@@ -64,7 +64,7 @@
 }
 
 /* Эффект при наведении */
-.layout-base .link-table a:hover:before {
+.layout-base a:hover:before {
     visibility: visible; /* Сделать линию видимой */
     transform: scaleX(1); /* Растянуть линию по горизонтали */
     transform-origin: bottom left; /* Изменить ось масштабирования */
@@ -81,23 +81,28 @@
 
 .layout-base .auth {
     text-align: right;
-}
-
-.layout-base a {
-    color: aliceblue;
+    width: 40%;
 }
 
 .layout-base .auth-table {
-    margin-left: 15vw;
+    float: right;
 }
 
 .layout-base .auth-table td {
     padding-left: 2vw;
 }
 
+.layout-base .theatre-title {
+    width: 40%;
+}
+
 .layout-base .theatre-title a{
     text-decoration: none;
     color: inherit;
+}
+
+.layout-base .search-bar-cell {
+    width: 20%;
 }
 
 .layout-base .footer-cell {

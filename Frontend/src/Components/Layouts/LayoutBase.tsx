@@ -8,6 +8,7 @@ import axios from 'axios';
 import IdentityBase from '../../Interfaces/IdentityBase';
 import InitIdentity from '../Functions/InitIdentity';
 import FeedbackForm from '../FeedbackForm';
+import SearchBar from '../SearchBar';
 interface ParentCompProps {
     renderBody: React.ReactNode
     appStore?: AppStore
@@ -53,6 +54,7 @@ const LayoutBase: React.FC<ParentCompProps> = (props) => {
                         <table>
                             <tr>
                             <td className='theatre-title'><Link to="/"><h1>Театральная студия "В Созвездиях"</h1></Link></td>
+                            <td className='search-bar-cell'><SearchBar/></td>
                             <td className='auth'>
                                 <table className='auth-table'>
                                     <tr>
