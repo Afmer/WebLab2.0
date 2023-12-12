@@ -5,7 +5,7 @@ import '../CSS/FavoritePinButton.css'
 import { Routes, Route, Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { AppStore } from '../AppStore';
-import Favorites from './Favorites';
+import '../CSS/RecycleBinButton.css'
 import ShortShow from '../Interfaces/ShortShow';
 interface States {
     Shows: ShortShow[];
@@ -64,6 +64,31 @@ class Shows extends Component<Props, States> {
             }
         }
     }
+    handleDeleteClick = (show: ShortShow) => {
+        const form = new FormData();
+        form.append('showId', show.id)
+        axios.post('api/Shows/Delete', form)
+            .then(response => {
+                if(response.status === 200)
+                {
+                    this.props.appStore?.removeFavoriteShow(show);
+                    const newShowList = Shows._shows?.filter(x => x.id != show.id)
+                    if(newShowList !== undefined)
+                    {
+                        Shows._shows = newShowList;
+                        this.setState({Shows: newShowList})
+                    }
+                    else
+                    {
+                        Shows._shows = []
+                        this.setState({Shows: []})
+                    }
+                }
+            })
+            .catch((error) => {
+                console.error('Ошибка:', error.config);
+            });
+    }
     render() {
         return (
         <div className='shows'>
@@ -72,12 +97,20 @@ class Shows extends Component<Props, States> {
                     <tr><td>
                         <div className='background'>
                             {this.props.appStore?.authInfo?.IsAuthorize ?(
+                                <>
                                 <div className='favorite-pin-button'>
                                     <button id={'favorite-' + item.id} 
                                             className={this.props.appStore.favoriteShows?.find((obj) => obj.id === item.id) ?('pinned'):('unpinned')} 
                                             onClick={(event) => {this.handleFavoriteClick({id: item.id, name: item.name})}}>
                                     </button>
                                 </div>
+                                {this.props.appStore.authInfo.IsAdmin &&(<div className='recycle-bin-button'>
+                                    <button id={'favorite-' + item.id} 
+                                            className={this.props.appStore.favoriteShows?.find((obj) => obj.id === item.id) ?('pinned'):('unpinned')} 
+                                            onClick={(event) => {this.handleDeleteClick({id: item.id, name: item.name})}}>
+                                    </button>
+                                </div>)}
+                                </>
                             ): null}
                             <Link to={"/Show/" + item.id}>{item.name}</Link>
                         </div>

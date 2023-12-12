@@ -62,4 +62,16 @@ public class ShowsController : ControllerBase
         }
         return BadRequest(new {Success = false});
     }
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> Delete([FromForm]DeleteShowModel model)
+    {
+        if(ModelState.IsValid)
+        {
+            var success = await _dbManager.DeleteShow(model);
+            if(success)
+                return Ok();
+        }
+        return BadRequest(model);
+    }
 }

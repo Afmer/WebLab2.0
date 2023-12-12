@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Weblab.Architecture.Enums;
 using Weblab.Architecture.Interfaces;
 using Weblab.Models;
@@ -292,5 +293,17 @@ public class DbManagerService : IDbManager
         foreach(var image in images)
             await _imageService.Delete(image.Id, "ShowsExtraImages");
         return (false, null);
+    }
+    public async Task<bool> DeleteShow(DeleteShowModel model)
+    {
+        var result = await ExecuteInTransaction(async () => {
+            var show = await _context.Shows.FindAsync(model.ShowId);
+
+            if(show == null)
+                throw new Exception("show is null");
+            _context.Shows.Remove(show);
+            await _context.SaveChangesAsync();
+        });
+        return result.Success;
     }
 }

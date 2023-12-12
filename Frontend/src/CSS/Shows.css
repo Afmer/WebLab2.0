@@ -27,3 +27,7 @@
     padding-top: 1vh;
     width: 100vw
 }
+
+.recycle-bin-button button {
+    margin-left: 90% !important;
+}
