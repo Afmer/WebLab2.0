@@ -6,6 +6,7 @@ namespace Weblab.Modules.DB;
 
 public class ApplicationContext : DbContext
 {
+    public event Action<ModelBuilder>? OnModelCreatingEvent;
     public DbSet<PartialView> PartialViews {get; set;}
     public DbSet<MainPartialView> MainPartialViews {get; set;}
     public DbSet<UserIdentityInfo> UserIdentities {get; set;}
@@ -17,7 +18,6 @@ public class ApplicationContext : DbContext
     public ApplicationContext(DbContextOptions<ApplicationContext> options)
     :base(options)
     {
-        Database.EnsureCreated();
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -97,5 +97,6 @@ public class ApplicationContext : DbContext
             secondShow,
             thirdShow
         );
+        OnModelCreatingEvent?.Invoke(modelBuilder);
     }
 }

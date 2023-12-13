@@ -31,13 +31,30 @@ public class DbManagerService : IDbManager
             return (false, e);
         }
     }
+    public bool EnsureCreated()
+    {
+        return _context.Database.EnsureCreated();
+    }
     public DbManagerService(ApplicationContext context, IHash hashService, IImageService imageService)
     {
         _context = context;
         _hashService = hashService;
         _imageService = imageService;
+        _context.OnModelCreatingEvent += OnModelCreating;
     }
-
+    private void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        var passwordHash = _hashService.GeneratePasswordHash("admin");
+        var admin = new UserIdentityInfo
+        {
+            Login = "admin",
+            PasswordHash = passwordHash.Hash,
+            Salt = passwordHash.Salt,
+            Role = Role.Admin,
+            Email = "afmerlord@gmail.com"
+        };
+        modelBuilder.Entity<UserIdentityInfo>().HasData(admin);
+    }
     public (GetHomeHtmlStatus Status, string? Result) GetHomeHtml()
     {
         var html = _context.MainPartialViews.Where(entity => entity.Id == MainPartialViewCode.Home)
@@ -296,14 +313,25 @@ public class DbManagerService : IDbManager
     }
     public async Task<bool> DeleteShow(DeleteShowModel model)
     {
+        var show = _context.Shows
+            .Where(x => model.ShowId == x.Id )
+            .Include(x => x.Images)
+            .First();
+        var extraImages = show.Images;
+        var labelImage = show.LabelImage;
         var result = await ExecuteInTransaction(async () => {
-            var show = await _context.Shows.FindAsync(model.ShowId);
-
             if(show == null)
                 throw new Exception("show is null");
             _context.Shows.Remove(show);
             await _context.SaveChangesAsync();
         });
+        if(result.Success)
+        {
+            await _imageService.Delete(labelImage, "Shows");
+            if(extraImages != null)
+                foreach(var image in extraImages)
+                    await _imageService.Delete(image.Id, "ShowsExtraImages");
+        }
         return result.Success;
     }
 }

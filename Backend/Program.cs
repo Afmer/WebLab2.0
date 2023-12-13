@@ -84,6 +84,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy(PolicyNames.User, policy => policy.Requirements.Add(new RoleHierarсhyRequirement(Role.User)));
 });
 builder.Services.AddScoped<IHash, HashService>();
+builder.Services.AddScoped<IDbManager, DbManagerService>();
 builder.Services.AddScoped<IDbHome, DbManagerService>();
 builder.Services.AddScoped<IDbAuth, DbManagerService>();
 builder.Services.AddScoped<IDbShows, DbManagerService>();
@@ -100,16 +101,14 @@ var app = builder.Build();
 
 using(var scope = app.Services.CreateScope())
 {
-    using(var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationContext>())
+    var dbContext = scope.ServiceProvider.GetRequiredService<IDbManager>();
+    try
     {
-        try
-        {
-            dbContext.Database.EnsureCreated();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
+        dbContext.EnsureCreated();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
     }
 }
 
