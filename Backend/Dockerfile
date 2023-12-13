@@ -25,4 +25,7 @@ RUN dotnet publish "WebLab2.0.csproj" -c $configuration -o /app/publish /p:UseAp
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+USER root
+RUN chmod -R 777 ./AppData/
+USER appuser
 ENTRYPOINT ["dotnet", "WebLab2.0.dll"]
